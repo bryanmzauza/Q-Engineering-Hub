@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Q-Engineering Hub — Seu hub completo de Engenharia Química com calculadoras, formulários e banco de propriedades." />
+  <title>Q-Engineering Hub</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ========== Header ========== -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo" aria-label="Q-Engineering Hub — Página inicial">
+        <span class="logo-icon">⚗️</span>
+        <div class="logo-text">
+          <h1>Q-Engineering Hub</h1>
+          <span>Engenharia Química</span>
+        </div>
+      </a>
+
+      <button class="menu-toggle" aria-label="Abrir menu" id="menuToggle">☰</button>
+
+      <nav class="header-nav" id="headerNav">
+        <a href="index.html" class="active">Início</a>
+        <a href="pages/properties.html">Propriedades</a>
+        <a href="pages/formulas.html">Formulário</a>
+        <a href="https://github.com/bryanmzauza/Q-Engineering-Hub" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ========== Hero ========== -->
+  <section class="hero">
+    <div class="container">
+      <h2>Q-Engineering Hub</h2>
+      <p>Seu hub completo de Engenharia Química — calculadoras, formulários e banco de propriedades de substâncias, tudo em um só lugar.</p>
+    </div>
+  </section>
+
+  <!-- ========== Modules Grid ========== -->
+  <section class="container">
+    <div class="modules-grid" id="modulesGrid">
+
+      <!-- Conversor de Unidades — ATIVO -->
+      <a href="pages/unit-converter.html" class="module-card" aria-label="Conversor de Unidades">
+        <span class="badge badge--ready">Pronto</span>
+        <div class="card-icon">🔄</div>
+        <h3>Conversor de Unidades</h3>
+        <p>Converta pressão, temperatura, vazão, viscosidade, massa, energia e muito mais.</p>
+      </a>
+
+      <!-- Balanço de Massa -->
+      <div class="module-card disabled" aria-label="Balanço de Massa — Em breve">
+        <span class="badge">Em breve</span>
+        <div class="card-icon">⚖️</div>
+        <h3>Balanço de Massa</h3>
+        <p>Calculadora com correntes de entrada/saída e reações químicas.</p>
+      </div>
+
+      <!-- Balanço de Energia -->
+      <div class="module-card disabled" aria-label="Balanço de Energia — Em breve">
+        <span class="badge">Em breve</span>
+        <div class="card-icon">🔥</div>
+        <h3>Balanço de Energia</h3>
+        <p>Cálculos com entalpia, Cp e trocadores de calor.</p>
+      </div>
+
+      <!-- Termodinâmica -->
+      <div class="module-card disabled" aria-label="Termodinâmica — Em breve">
+        <span class="badge">Em breve</span>
+        <div class="card-icon">🌡️</div>
+        <h3>Termodinâmica</h3>
+        <p>Equações de estado: gás ideal, Van der Waals, Peng-Robinson.</p>
+      </div>
+
+      <!-- Reatores Químicos -->
+      <div class="module-card disabled" aria-label="Reatores Químicos — Em breve">
+        <span class="badge">Em breve</span>
+        <div class="card-icon">🧪</div>
+        <h3>Reatores Químicos</h3>
+        <p>CSTR, PFR, PBR — conversão, volume e tempo de residência.</p>
+      </div>
+
+      <!-- Mecânica dos Fluidos -->
+      <div class="module-card disabled" aria-label="Mecânica dos Fluidos — Em breve">
+        <span class="badge">Em breve</span>
+        <div class="card-icon">💧</div>
+        <h3>Mecânica dos Fluidos</h3>
+        <p>Bernoulli, perda de carga e dimensionamento de bombas.</p>
+      </div>
+
+      <!-- Transferência de Calor -->
+      <div class="module-card disabled" aria-label="Transferência de Calor — Em breve">
+        <span class="badge">Em breve</span>
+        <div class="card-icon">♨️</div>
+        <h3>Transferência de Calor</h3>
+        <p>Condução, convecção, radiação e trocadores de calor.</p>
+      </div>
+
+      <!-- Transferência de Massa -->
+      <div class="module-card disabled" aria-label="Transferência de Massa — Em breve">
+        <span class="badge">Em breve</span>
+        <div class="card-icon">🌫️</div>
+        <h3>Transferência de Massa</h3>
+        <p>Difusão, torres de absorção e transferência entre fases.</p>
+      </div>
+
+      <!-- Operações Unitárias -->
+      <div class="module-card disabled" aria-label="Operações Unitárias — Em breve">
+        <span class="badge">Em breve</span>
+        <div class="card-icon">🏭</div>
+        <h3>Operações Unitárias</h3>
+        <p>Destilação (McCabe-Thiele), absorção, secagem.</p>
+      </div>
+
+      <!-- Propriedades -->
+      <a href="pages/properties.html" class="module-card" aria-label="Banco de Propriedades">
+        <span class="badge badge--ready">Pronto</span>
+        <div class="card-icon">📊</div>
+        <h3>Propriedades</h3>
+        <p>Busca no banco de substâncias com filtros e propriedades termodinâmicas.</p>
+      </a>
+
+      <!-- Formulário -->
+      <a href="pages/formulas.html" class="module-card" aria-label="Formulário de Fórmulas">
+        <span class="badge badge--ready">Pronto</span>
+        <div class="card-icon">📐</div>
+        <h3>Formulário</h3>
+        <p>Resumo das principais fórmulas por disciplina da Engenharia Química.</p>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ========== Footer ========== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-links">
+        <a href="https://github.com/bryanmzauza/Q-Engineering-Hub" target="_blank" rel="noopener">GitHub</a>
+        <a href="pages/formulas.html">Formulário</a>
+        <a href="pages/properties.html">Propriedades</a>
+      </div>
+      <p>&copy; 2026 Q-Engineering Hub — Feito por <a href="https://github.com/bryanmzauza" target="_blank" rel="noopener">bryanmzauza</a></p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

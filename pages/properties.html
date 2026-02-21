@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Banco de Propriedades de Substâncias — Q-Engineering Hub" />
+  <title>Propriedades — Q-Engineering Hub</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+
+  <!-- ========== Header ========== -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../index.html" class="logo">
+        <span class="logo-icon">⚗️</span>
+        <div class="logo-text">
+          <h1>Q-Engineering Hub</h1>
+          <span>Engenharia Química</span>
+        </div>
+      </a>
+      <button class="menu-toggle" id="menuToggle">☰</button>
+      <nav class="header-nav" id="headerNav">
+        <a href="../index.html">Início</a>
+        <a href="properties.html" class="active">Propriedades</a>
+        <a href="formulas.html">Formulário</a>
+        <a href="https://github.com/bryanmzauza/Q-Engineering-Hub" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ========== Page Wrapper ========== -->
+  <div class="page-wrapper">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <p class="sidebar-title">Módulos</p>
+      <nav class="sidebar-nav">
+        <a href="unit-converter.html"><span class="nav-icon">🔄</span> Conversor de Unidades</a>
+        <a href="mass-balance.html" class="disabled"><span class="nav-icon">⚖️</span> Balanço de Massa</a>
+        <a href="energy-balance.html" class="disabled"><span class="nav-icon">🔥</span> Balanço de Energia</a>
+        <a href="thermodynamics.html" class="disabled"><span class="nav-icon">🌡️</span> Termodinâmica</a>
+        <a href="reactors.html" class="disabled"><span class="nav-icon">🧪</span> Reatores Químicos</a>
+        <a href="fluid-mechanics.html" class="disabled"><span class="nav-icon">💧</span> Mecânica dos Fluidos</a>
+        <a href="heat-transfer.html" class="disabled"><span class="nav-icon">♨️</span> Transferência de Calor</a>
+        <a href="mass-transfer.html" class="disabled"><span class="nav-icon">🌫️</span> Transferência de Massa</a>
+        <a href="unit-operations.html" class="disabled"><span class="nav-icon">🏭</span> Operações Unitárias</a>
+        <a href="properties.html" class="active"><span class="nav-icon">📊</span> Propriedades</a>
+        <a href="formulas.html"><span class="nav-icon">📐</span> Formulário</a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content" style="max-width: 1400px;">
+      <button class="menu-toggle" id="sidebarToggle" aria-label="Abrir sidebar">☰</button>
+
+      <h2 class="page-title">📊 Banco de Propriedades</h2>
+      <p class="page-subtitle">Propriedades termodinâmicas e físicas de substâncias comuns na engenharia química.</p>
+
+      <!-- Search -->
+      <div class="search-wrapper">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" class="form-control" placeholder="Buscar substância (nome, fórmula)..." style="padding-left: 2.5rem;" aria-label="Buscar substância" />
+      </div>
+
+      <!-- Table -->
+      <div style="overflow-x: auto;">
+        <table class="data-table" id="substancesTable">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Name (EN)</th>
+              <th>Fórmula</th>
+              <th>Mw (g/mol)</th>
+              <th>Tc (K)</th>
+              <th>Pc (bar)</th>
+              <th>ω</th>
+              <th>Cp (J/mol·K)</th>
+              <th>Tb (K)</th>
+              <th>Tf (K)</th>
+              <th>ρ (kg/m³)</th>
+              <th>ΔHvap (kJ/mol)</th>
+              <th>k (W/m·K)</th>
+              <th>μ (mPa·s)</th>
+            </tr>
+          </thead>
+          <tbody id="substancesBody">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <p id="noResults" style="display:none; text-align:center; color:var(--text-muted); padding: 2rem 0;">
+        Nenhuma substância encontrada.
+      </p>
+    </main>
+  </div>
+
+  <!-- ========== Footer ========== -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; 2026 Q-Engineering Hub — <a href="https://github.com/bryanmzauza/Q-Engineering-Hub" target="_blank" rel="noopener">GitHub</a></p>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script src="../data/substances.js"></script>
+  <script src="../js/modules/properties.js"></script>
+</body>
+</html>

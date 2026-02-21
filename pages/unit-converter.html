@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Conversor de Unidades — Q-Engineering Hub" />
+  <title>Conversor de Unidades — Q-Engineering Hub</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+
+  <!-- ========== Header ========== -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../index.html" class="logo" aria-label="Q-Engineering Hub — Página inicial">
+        <span class="logo-icon">⚗️</span>
+        <div class="logo-text">
+          <h1>Q-Engineering Hub</h1>
+          <span>Engenharia Química</span>
+        </div>
+      </a>
+
+      <button class="menu-toggle" aria-label="Abrir menu" id="menuToggle">☰</button>
+
+      <nav class="header-nav" id="headerNav">
+        <a href="../index.html">Início</a>
+        <a href="properties.html">Propriedades</a>
+        <a href="formulas.html">Formulário</a>
+        <a href="https://github.com/bryanmzauza/Q-Engineering-Hub" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ========== Page Wrapper ========== -->
+  <div class="page-wrapper">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <p class="sidebar-title">Módulos</p>
+      <nav class="sidebar-nav" aria-label="Navegação de módulos">
+        <a href="unit-converter.html" class="active">
+          <span class="nav-icon">🔄</span> Conversor de Unidades
+        </a>
+        <a href="mass-balance.html" class="disabled">
+          <span class="nav-icon">⚖️</span> Balanço de Massa
+        </a>
+        <a href="energy-balance.html" class="disabled">
+          <span class="nav-icon">🔥</span> Balanço de Energia
+        </a>
+        <a href="thermodynamics.html" class="disabled">
+          <span class="nav-icon">🌡️</span> Termodinâmica
+        </a>
+        <a href="reactors.html" class="disabled">
+          <span class="nav-icon">🧪</span> Reatores Químicos
+        </a>
+        <a href="fluid-mechanics.html" class="disabled">
+          <span class="nav-icon">💧</span> Mecânica dos Fluidos
+        </a>
+        <a href="heat-transfer.html" class="disabled">
+          <span class="nav-icon">♨️</span> Transferência de Calor
+        </a>
+        <a href="mass-transfer.html" class="disabled">
+          <span class="nav-icon">🌫️</span> Transferência de Massa
+        </a>
+        <a href="unit-operations.html" class="disabled">
+          <span class="nav-icon">🏭</span> Operações Unitárias
+        </a>
+        <a href="properties.html">
+          <span class="nav-icon">📊</span> Propriedades
+        </a>
+        <a href="formulas.html">
+          <span class="nav-icon">📐</span> Formulário
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <button class="menu-toggle" id="sidebarToggle" aria-label="Abrir sidebar">☰</button>
+
+      <h2 class="page-title">🔄 Conversor de Unidades</h2>
+      <p class="page-subtitle">Selecione uma categoria e converta entre unidades de engenharia.</p>
+
+      <!-- Category Pills -->
+      <div class="category-pills" id="categoryPills" role="tablist" aria-label="Categorias de unidades">
+        <!-- Populated by JS -->
+      </div>
+
+      <!-- Converter Form -->
+      <div class="form-group">
+        <label for="inputValue">Valor</label>
+        <input type="number" id="inputValue" class="form-control" placeholder="Digite o valor..." step="any" aria-label="Valor a converter" />
+      </div>
+
+      <div class="converter-row">
+        <div class="form-group">
+          <label for="unitFrom">De</label>
+          <select id="unitFrom" class="form-control" aria-label="Unidade de origem">
+            <option value="">Selecione a categoria primeiro</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="unitTo">Para</label>
+          <select id="unitTo" class="form-control" aria-label="Unidade de destino">
+            <option value="">Selecione a categoria primeiro</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="text-align:center; margin: 0.75rem 0;">
+        <button class="swap-btn" id="swapBtn" aria-label="Trocar unidades" title="Trocar unidades">⇄</button>
+      </div>
+
+      <!-- Result -->
+      <div class="result-box" id="resultBox">
+        <p class="result-label">Resultado</p>
+        <p class="result-value" id="resultValue">—</p>
+      </div>
+    </main>
+  </div>
+
+  <!-- ========== Footer ========== -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; 2026 Q-Engineering Hub — <a href="https://github.com/bryanmzauza/Q-Engineering-Hub" target="_blank" rel="noopener">GitHub</a></p>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/modules/unit-converter.js"></script>
+</body>
+</html>
