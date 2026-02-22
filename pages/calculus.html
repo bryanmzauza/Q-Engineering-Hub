@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Referência de Cálculo — Derivadas, Integrais, Limites, Séries e mais — Q-Engineering Hub" />
+  <title>Cálculo — Q-Engineering Hub</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <!-- KaTeX for beautiful math rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous" />
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+  <style>
+    .formula-section {
+      margin-bottom: 2.5rem;
+    }
+    .formula-section h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .formula-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 1rem;
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+    .formula-card:hover {
+      border-color: rgba(88, 166, 255, 0.3);
+      box-shadow: 0 2px 16px rgba(88, 166, 255, 0.06);
+    }
+    .formula-card .formula-name {
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
+      color: var(--text-primary);
+    }
+    .formula-card .formula-eq {
+      background: rgba(88, 166, 255, 0.04);
+      border: 1px solid rgba(88, 166, 255, 0.12);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 0.85rem;
+      text-align: center;
+      overflow-x: auto;
+      font-size: 1.2rem;
+    }
+    .formula-card .formula-eq .katex {
+      font-size: 1.3em;
+      color: var(--accent);
+    }
+    .formula-card .formula-desc {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 0.5rem;
+    }
+    .formula-card .formula-vars {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      padding-top: 0.5rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem 0;
+    }
+    .formula-card .formula-vars .var-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      margin-right: 1rem;
+    }
+    .formula-card .formula-vars .var-item .katex {
+      font-size: 0.95em;
+    }
+
+    /* Topic navigation pills */
+    .topic-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+    .topic-pill {
+      display: inline-block;
+      padding: 0.4rem 1rem;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      background: var(--bg-card);
+      transition: all var(--transition);
+      cursor: pointer;
+    }
+    .topic-pill:hover,
+    .topic-pill.active {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(88, 166, 255, 0.08);
+    }
+    .topic-pill.active {
+      font-weight: 600;
+    }
+
+    /* Two-column layout for compact formula lists */
+    .formula-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    @media (max-width: 768px) {
+      .formula-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .formula-grid .formula-card {
+      margin-bottom: 0;
+    }
+
+    .formula-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 0.85rem;
+    }
+    .formula-table td {
+      padding: 0.6rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    .formula-table td:first-child {
+      width: 45%;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+    .formula-table td:last-child {
+      text-align: center;
+    }
+    .formula-table tr:last-child td {
+      border-bottom: none;
+    }
+    .formula-table .katex {
+      font-size: 1.1em;
+      color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== Header ========== -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../index.html" class="logo">
+        <span class="logo-icon">⚗️</span>
+        <div class="logo-text">
+          <h1>Q-Engineering Hub</h1>
+          <span>Engenharia Química</span>
+        </div>
+      </a>
+      <button class="menu-toggle" id="menuToggle">☰</button>
+      <nav class="header-nav" id="headerNav">
+        <a href="../index.html">Início</a>
+        <a href="properties.html">Propriedades</a>
+        <a href="formulas.html">Formulário</a>
+        <a href="https://github.com/bryanmzauza/Q-Engineering-Hub" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ========== Page Wrapper ========== -->
+  <div class="page-wrapper">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <p class="sidebar-title">Módulos</p>
+      <nav class="sidebar-nav">
+        <a href="unit-converter.html"><span class="nav-icon">🔄</span> Conversor de Unidades</a>
+        <a href="mass-balance.html" class="disabled"><span class="nav-icon">⚖️</span> Balanço de Massa</a>
+        <a href="energy-balance.html" class="disabled"><span class="nav-icon">🔥</span> Balanço de Energia</a>
+        <a href="thermodynamics.html" class="disabled"><span class="nav-icon">🌡️</span> Termodinâmica</a>
+        <a href="reactors.html" class="disabled"><span class="nav-icon">🧪</span> Reatores Químicos</a>
+        <a href="fluid-mechanics.html" class="disabled"><span class="nav-icon">💧</span> Mecânica dos Fluidos</a>
+        <a href="heat-transfer.html" class="disabled"><span class="nav-icon">♨️</span> Transferência de Calor</a>
+        <a href="mass-transfer.html" class="disabled"><span class="nav-icon">🌫️</span> Transferência de Massa</a>
+        <a href="unit-operations.html" class="disabled"><span class="nav-icon">🏭</span> Operações Unitárias</a>
+        <a href="properties.html"><span class="nav-icon">📊</span> Propriedades</a>
+        <a href="formulas.html"><span class="nav-icon">📐</span> Formulário</a>
+        <a href="calculus.html" class="active"><span class="nav-icon">∫</span> Cálculo</a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content" style="max-width: 920px;">
+      <button class="menu-toggle" id="sidebarToggle" aria-label="Abrir sidebar">☰</button>
+
+      <h2 class="page-title">∫ Cálculo</h2>
+      <p class="page-subtitle">Referência completa de Cálculo para Engenharia Química — derivadas, integrais, limites, séries e mais.</p>
+
+      <!-- Topic navigation -->
+      <div class="topic-pills" id="topicPills">
+        <button class="topic-pill active" data-topic="all">Todos</button>
+        <button class="topic-pill" data-topic="limits">Limites</button>
+        <button class="topic-pill" data-topic="derivatives">Derivadas</button>
+        <button class="topic-pill" data-topic="integrals">Integrais</button>
+        <button class="topic-pill" data-topic="series">Séries</button>
+        <button class="topic-pill" data-topic="multivariable">Multivariável</button>
+        <button class="topic-pill" data-topic="ode">Eq. Diferenciais</button>
+        <button class="topic-pill" data-topic="laplace">Transformada de Laplace</button>
+      </div>
+
+
+      <!-- ======================== LIMITES ======================== -->
+      <section class="formula-section" data-section="limits">
+        <h3>📏 Limites</h3>
+
+        <div class="formula-card">
+          <p class="formula-name">Definição Formal (ε-δ)</p>
+          <div class="formula-eq" data-formula="\lim_{x \to a} f(x) = L \iff \forall\, \varepsilon > 0,\; \exists\, \delta > 0 : 0 < |x - a| < \delta \Rightarrow |f(x) - L| < \varepsilon"></div>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Propriedades dos Limites</p>
+          <table class="formula-table">
+            <tr>
+              <td>Soma</td>
+              <td><span data-formula-inline="\lim [f(x) + g(x)] = L + M"></span></td>
+            </tr>
+            <tr>
+              <td>Produto</td>
+              <td><span data-formula-inline="\lim [f(x) \cdot g(x)] = L \cdot M"></span></td>
+            </tr>
+            <tr>
+              <td>Quociente</td>
+              <td><span data-formula-inline="\lim \frac{f(x)}{g(x)} = \frac{L}{M}, \; M \neq 0"></span></td>
+            </tr>
+            <tr>
+              <td>Constante</td>
+              <td><span data-formula-inline="\lim [c \cdot f(x)] = c \cdot L"></span></td>
+            </tr>
+            <tr>
+              <td>Potência</td>
+              <td><span data-formula-inline="\lim [f(x)]^n = L^n"></span></td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Limites Fundamentais</p>
+          <table class="formula-table">
+            <tr>
+              <td>Seno</td>
+              <td><span data-formula-inline="\displaystyle\lim_{x \to 0} \frac{\sin x}{x} = 1"></span></td>
+            </tr>
+            <tr>
+              <td>Exponencial</td>
+              <td><span data-formula-inline="\displaystyle\lim_{x \to 0} \frac{e^x - 1}{x} = 1"></span></td>
+            </tr>
+            <tr>
+              <td>Logaritmo</td>
+              <td><span data-formula-inline="\displaystyle\lim_{x \to 0} \frac{\ln(1+x)}{x} = 1"></span></td>
+            </tr>
+            <tr>
+              <td>Número de Euler</td>
+              <td><span data-formula-inline="\displaystyle\lim_{n \to \infty} \left(1 + \frac{1}{n}\right)^n = e"></span></td>
+            </tr>
+            <tr>
+              <td>Euler (forma geral)</td>
+              <td><span data-formula-inline="\displaystyle\lim_{x \to 0} (1+x)^{1/x} = e"></span></td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Regra de L'Hôpital</p>
+          <div class="formula-eq" data-formula="\lim_{x \to a} \frac{f(x)}{g(x)} = \lim_{x \to a} \frac{f'(x)}{g'(x)}"></div>
+          <p class="formula-desc">Aplicável quando o limite resulta em indeterminações <span data-formula-inline="\frac{0}{0}"></span> ou <span data-formula-inline="\frac{\infty}{\infty}"></span>.</p>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Teorema do Confronto (Sanduíche)</p>
+          <div class="formula-eq" data-formula="g(x) \leq f(x) \leq h(x) \;\text{ e }\; \lim g(x) = \lim h(x) = L \;\Rightarrow\; \lim f(x) = L"></div>
+        </div>
+      </section>
+
+
+      <!-- ======================== DERIVADAS ======================== -->
+      <section class="formula-section" data-section="derivatives">
+        <h3>📈 Derivadas — Definição e Regras</h3>
+
+        <div class="formula-card">
+          <p class="formula-name">Definição de Derivada</p>
+          <div class="formula-eq" data-formula="f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}"></div>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Regras de Derivação</p>
+          <table class="formula-table">
+            <tr>
+              <td>Constante</td>
+              <td><span data-formula-inline="\dfrac{d}{dx}(c) = 0"></span></td>
+            </tr>
+            <tr>
+              <td>Potência</td>
+              <td><span data-formula-inline="\dfrac{d}{dx}(x^n) = n\,x^{n-1}"></span></td>
+            </tr>
+            <tr>
+              <td>Soma</td>
+              <td><span data-formula-inline="(f + g)' = f' + g'"></span></td>
+            </tr>
+            <tr>
+              <td>Produto</td>
+              <td><span data-formula-inline="(f \cdot g)' = f' g + f g'"></span></td>
+            </tr>
+            <tr>
+              <td>Quociente</td>
+              <td><span data-formula-inline="\left(\dfrac{f}{g}\right)' = \dfrac{f'g - fg'}{g^2}"></span></td>
+            </tr>
+            <tr>
+              <td>Cadeia</td>
+              <td><span data-formula-inline="\dfrac{d}{dx}[f(g(x))] = f'(g(x)) \cdot g'(x)"></span></td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Derivadas de Funções Elementares</p>
+          <table class="formula-table">
+            <tr>
+              <td><span data-formula-inline="e^x"></span></td>
+              <td><span data-formula-inline="\dfrac{d}{dx}(e^x) = e^x"></span></td>
+            </tr>
+            <tr>
+              <td><span data-formula-inline="a^x"></span></td>
+              <td><span data-formula-inline="\dfrac{d}{dx}(a^x) = a^x \ln a"></span></td>
+            </tr>
+            <tr>
+              <td><span data-formula-inline="\ln x"></span></td>
+              <td><span data-formula-inline="\dfrac{d}{dx}(\ln x) = \dfrac{1}{x}"></span></td>
+            </tr>
+            <tr>
+              <td><span data-formula-inline="\log_a x"></span></td>
+              <td><span data-formula-inline="\dfrac{d}{dx}(\log_a x) = \dfrac{1}{x \ln a}"></span></td>
+            </tr>
+            <tr>
+              <td><span data-formula-inline="\sin x"></span></td>
+              <td><span data-formula-inline="\dfrac{d}{dx}(\sin x) = \cos x"></span></td>
+            </tr>
+            <tr>
+              <td><span data-formula-inline="\cos x"></span></td>
+              <td><span data-formula-inline="\dfrac{d}{dx}(\cos x) = -\sin x"></span></td>
+            </tr>
+            <tr>
+              <td><span data-formula-inline="\tan x"></span></td>
+              <td><span data-formula-inline="\dfrac{d}{dx}(\tan x) = \sec^2 x"></span></td>
+            </tr>
+            <tr>
+              <td><span data-formula-inline="\sec x"></span></td>
+              <td><span data-formula-inline="\dfrac{d}{dx}(\sec x) = \sec x \tan x"></span></td>
+            </tr>
+            <tr>
+              <td><span data-formula-inline="\csc x"></span></td>
+              <td><span data-formula-inline="\dfrac{d}{dx}(\csc x) = -\csc x \cot x"></span></td>
+            </tr>
+            <tr>
+              <td><span data-formula-inline="\cot x"></span></td>
+              <td><span data-formula-inline="\dfrac{d}{dx}(\cot x) = -\csc^2 x"></span></td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Derivadas de Funções Inversas Trigonométricas</p>
+          <table class="formula-table">
+            <tr>
+              <td><span data-formula-inline="\arcsin x"></span></td>
+              <td><span data-formula-inline="\dfrac{d}{dx}(\arcsin x) = \dfrac{1}{\sqrt{1 - x^2}}"></span></td>
+            </tr>
+            <tr>
+              <td><span data-formula-inline="\arccos x"></span></td>
+              <td><span data-formula-inline="\dfrac{d}{dx}(\arccos x) = \dfrac{-1}{\sqrt{1 - x^2}}"></span></td>
+            </tr>
+            <tr>
+              <td><span data-formula-inline="\arctan x"></span></td>
+              <td><span data-formula-inline="\dfrac{d}{dx}(\arctan x) = \dfrac{1}{1 + x^2}"></span></td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Derivadas de Funções Hiperbólicas</p>
+          <table class="formula-table">
+            <tr>
+              <td><span data-formula-inline="\sinh x"></span></td>
+              <td><span data-formula-inline="\dfrac{d}{dx}(\sinh x) = \cosh x"></span></td>
+            </tr>
+            <tr>
+              <td><span data-formula-inline="\cosh x"></span></td>
+              <td><span data-formula-inline="\dfrac{d}{dx}(\cosh x) = \sinh x"></span></td>
+            </tr>
+            <tr>
+              <td><span data-formula-inline="\tanh x"></span></td>
+              <td><span data-formula-inline="\dfrac{d}{dx}(\tanh x) = \text{sech}^2\, x"></span></td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Derivada Implícita &amp; Logarítmica</p>
+          <div class="formula-eq" data-formula="\text{Se } F(x,y) = 0 \;\Rightarrow\; \frac{dy}{dx} = -\frac{F_x}{F_y}"></div>
+          <p class="formula-desc">Derivada logarítmica: para <span data-formula-inline="y = f(x)^{g(x)}"></span>, tomar <span data-formula-inline="\ln"></span> dos dois lados e derivar.</p>
+        </div>
+      </section>
+
+
+      <!-- ======================== INTEGRAIS ======================== -->
+      <section class="formula-section" data-section="integrals">
+        <h3>∫ Integrais</h3>
+
+        <div class="formula-card">
+          <p class="formula-name">Teorema Fundamental do Cálculo</p>
+          <div class="formula-eq" data-formula="\int_a^b f(x)\,dx = F(b) - F(a), \quad \text{onde } F'(x) = f(x)"></div>
+          <div class="formula-eq" data-formula="\frac{d}{dx}\int_a^x f(t)\,dt = f(x)"></div>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Integrais Elementares</p>
+          <table class="formula-table">
+            <tr>
+              <td>Potência</td>
+              <td><span data-formula-inline="\displaystyle\int x^n\,dx = \frac{x^{n+1}}{n+1} + C, \; n \neq -1"></span></td>
+            </tr>
+            <tr>
+              <td>Recíproco</td>
+              <td><span data-formula-inline="\displaystyle\int \frac{1}{x}\,dx = \ln|x| + C"></span></td>
+            </tr>
+            <tr>
+              <td>Exponencial</td>
+              <td><span data-formula-inline="\displaystyle\int e^x\,dx = e^x + C"></span></td>
+            </tr>
+            <tr>
+              <td>Exponencial (base a)</td>
+              <td><span data-formula-inline="\displaystyle\int a^x\,dx = \frac{a^x}{\ln a} + C"></span></td>
+            </tr>
+            <tr>
+              <td>Seno</td>
+              <td><span data-formula-inline="\displaystyle\int \sin x\,dx = -\cos x + C"></span></td>
+            </tr>
+            <tr>
+              <td>Cosseno</td>
+              <td><span data-formula-inline="\displaystyle\int \cos x\,dx = \sin x + C"></span></td>
+            </tr>
+            <tr>
+              <td>Secante²</td>
+              <td><span data-formula-inline="\displaystyle\int \sec^2 x\,dx = \tan x + C"></span></td>
+            </tr>
+            <tr>
+              <td>Cossecante²</td>
+              <td><span data-formula-inline="\displaystyle\int \csc^2 x\,dx = -\cot x + C"></span></td>
+            </tr>
+            <tr>
+              <td>Sec·Tan</td>
+              <td><span data-formula-inline="\displaystyle\int \sec x \tan x\,dx = \sec x + C"></span></td>
+            </tr>
+            <tr>
+              <td>Csc·Cot</td>
+              <td><span data-formula-inline="\displaystyle\int \csc x \cot x\,dx = -\csc x + C"></span></td>
+            </tr>
+            <tr>
+              <td>Tangente</td>
+              <td><span data-formula-inline="\displaystyle\int \tan x\,dx = -\ln|\cos x| + C"></span></td>
+            </tr>
+            <tr>
+              <td>Secante</td>
+              <td><span data-formula-inline="\displaystyle\int \sec x\,dx = \ln|\sec x + \tan x| + C"></span></td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Integrais que geram Funções Inversas</p>
+          <table class="formula-table">
+            <tr>
+              <td>Arco seno</td>
+              <td><span data-formula-inline="\displaystyle\int \frac{dx}{\sqrt{a^2 - x^2}} = \arcsin\!\frac{x}{a} + C"></span></td>
+            </tr>
+            <tr>
+              <td>Arco tangente</td>
+              <td><span data-formula-inline="\displaystyle\int \frac{dx}{a^2 + x^2} = \frac{1}{a}\arctan\!\frac{x}{a} + C"></span></td>
+            </tr>
+            <tr>
+              <td>Arco secante</td>
+              <td><span data-formula-inline="\displaystyle\int \frac{dx}{x\sqrt{x^2 - a^2}} = \frac{1}{a}\text{arcsec}\!\frac{|x|}{a} + C"></span></td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Integrais Hiperbólicas</p>
+          <table class="formula-table">
+            <tr>
+              <td><span data-formula-inline="\sinh x"></span></td>
+              <td><span data-formula-inline="\displaystyle\int \sinh x\,dx = \cosh x + C"></span></td>
+            </tr>
+            <tr>
+              <td><span data-formula-inline="\cosh x"></span></td>
+              <td><span data-formula-inline="\displaystyle\int \cosh x\,dx = \sinh x + C"></span></td>
+            </tr>
+            <tr>
+              <td><span data-formula-inline="\tanh x"></span></td>
+              <td><span data-formula-inline="\displaystyle\int \tanh x\,dx = \ln(\cosh x) + C"></span></td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Técnicas de Integração</p>
+          <table class="formula-table">
+            <tr>
+              <td>Substituição</td>
+              <td><span data-formula-inline="\displaystyle\int f(g(x))\,g'(x)\,dx = \int f(u)\,du"></span></td>
+            </tr>
+            <tr>
+              <td>Por partes</td>
+              <td><span data-formula-inline="\displaystyle\int u\,dv = uv - \int v\,du"></span></td>
+            </tr>
+            <tr>
+              <td>Frações parciais</td>
+              <td><span data-formula-inline="\displaystyle\frac{P(x)}{Q(x)} = \frac{A}{x-a} + \frac{B}{x-b} + \cdots"></span></td>
+            </tr>
+          </table>
+          <p class="formula-desc">Mnemônico para partes (LIATE): Logarítmica, Inversa trig, Algébrica, Trigonométrica, Exponencial — prioridade para escolha de <span data-formula-inline="u"></span>.</p>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Substituição Trigonométrica</p>
+          <table class="formula-table">
+            <tr>
+              <td><span data-formula-inline="\sqrt{a^2 - x^2}"></span></td>
+              <td><span data-formula-inline="x = a\sin\theta"></span></td>
+            </tr>
+            <tr>
+              <td><span data-formula-inline="\sqrt{a^2 + x^2}"></span></td>
+              <td><span data-formula-inline="x = a\tan\theta"></span></td>
+            </tr>
+            <tr>
+              <td><span data-formula-inline="\sqrt{x^2 - a^2}"></span></td>
+              <td><span data-formula-inline="x = a\sec\theta"></span></td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Integrais Impróprias</p>
+          <div class="formula-eq" data-formula="\int_a^\infty f(x)\,dx = \lim_{t \to \infty} \int_a^t f(x)\,dx"></div>
+          <p class="formula-desc">Integral imprópria converge se o limite existe e é finito.</p>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Integral Gaussiana</p>
+          <div class="formula-eq" data-formula="\int_{-\infty}^{\infty} e^{-x^2}\,dx = \sqrt{\pi}"></div>
+          <p class="formula-desc">Resultado fundamental em probabilidade, termodinâmica estatística e transferência de calor.</p>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Função Gama</p>
+          <div class="formula-eq" data-formula="\Gamma(n) = \int_0^\infty t^{n-1} e^{-t}\,dt, \quad \Gamma(n) = (n-1)!"></div>
+          <p class="formula-desc">Generalização do fatorial para números reais e complexos. Comum em distribuições estatísticas.</p>
+        </div>
+      </section>
+
+
+      <!-- ======================== SÉRIES ======================== -->
+      <section class="formula-section" data-section="series">
+        <h3>📊 Séries e Expansões</h3>
+
+        <div class="formula-card">
+          <p class="formula-name">Série Geométrica</p>
+          <div class="formula-eq" data-formula="\sum_{n=0}^{\infty} r^n = \frac{1}{1 - r}, \quad |r| < 1"></div>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Série de Taylor / Maclaurin</p>
+          <div class="formula-eq" data-formula="f(x) = \sum_{n=0}^{\infty} \frac{f^{(n)}(a)}{n!}(x - a)^n"></div>
+          <p class="formula-desc">Maclaurin é o caso particular com <span data-formula-inline="a = 0"></span>.</p>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Expansões de Maclaurin Importantes</p>
+          <table class="formula-table">
+            <tr>
+              <td><span data-formula-inline="e^x"></span></td>
+              <td><span data-formula-inline="\displaystyle\sum_{n=0}^{\infty} \frac{x^n}{n!} = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \cdots"></span></td>
+            </tr>
+            <tr>
+              <td><span data-formula-inline="\sin x"></span></td>
+              <td><span data-formula-inline="\displaystyle\sum_{n=0}^{\infty} \frac{(-1)^n x^{2n+1}}{(2n+1)!} = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \cdots"></span></td>
+            </tr>
+            <tr>
+              <td><span data-formula-inline="\cos x"></span></td>
+              <td><span data-formula-inline="\displaystyle\sum_{n=0}^{\infty} \frac{(-1)^n x^{2n}}{(2n)!} = 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \cdots"></span></td>
+            </tr>
+            <tr>
+              <td><span data-formula-inline="\ln(1+x)"></span></td>
+              <td><span data-formula-inline="\displaystyle\sum_{n=1}^{\infty} \frac{(-1)^{n+1} x^n}{n} = x - \frac{x^2}{2} + \frac{x^3}{3} - \cdots"></span></td>
+            </tr>
+            <tr>
+              <td><span data-formula-inline="(1+x)^\alpha"></span></td>
+              <td><span data-formula-inline="\displaystyle\sum_{n=0}^{\infty} \binom{\alpha}{n} x^n = 1 + \alpha x + \frac{\alpha(\alpha-1)}{2!}x^2 + \cdots"></span></td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Testes de Convergência</p>
+          <table class="formula-table">
+            <tr>
+              <td>Teste da Razão</td>
+              <td><span data-formula-inline="\displaystyle L = \lim_{n\to\infty}\left|\frac{a_{n+1}}{a_n}\right|;\; L < 1 \Rightarrow \text{converge}"></span></td>
+            </tr>
+            <tr>
+              <td>Teste da Raiz</td>
+              <td><span data-formula-inline="\displaystyle L = \lim_{n\to\infty}\sqrt[n]{|a_n|};\; L < 1 \Rightarrow \text{converge}"></span></td>
+            </tr>
+            <tr>
+              <td>Teste da Integral</td>
+              <td><span data-formula-inline="\displaystyle\sum a_n \text{ e } \int_1^\infty f(x)\,dx \text{ convergem juntas}"></span></td>
+            </tr>
+            <tr>
+              <td>Teste da Comparação</td>
+              <td><span data-formula-inline="0 \leq a_n \leq b_n;\; \sum b_n \text{ converge} \Rightarrow \sum a_n \text{ converge}"></span></td>
+            </tr>
+            <tr>
+              <td>Série p</td>
+              <td><span data-formula-inline="\displaystyle\sum \frac{1}{n^p} \text{ converge se } p > 1"></span></td>
+            </tr>
+            <tr>
+              <td>Séries Alternadas</td>
+              <td><span data-formula-inline="\text{Se } |a_{n+1}| \leq |a_n| \text{ e } a_n \to 0 \Rightarrow \text{converge}"></span></td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Série de Fourier</p>
+          <div class="formula-eq" data-formula="f(x) = \frac{a_0}{2} + \sum_{n=1}^{\infty}\left[a_n \cos\!\left(\frac{n\pi x}{L}\right) + b_n \sin\!\left(\frac{n\pi x}{L}\right)\right]"></div>
+          <div class="formula-vars">
+            <span class="var-item"><span data-formula-inline="a_n = \frac{1}{L}\int_{-L}^{L} f(x)\cos\!\left(\frac{n\pi x}{L}\right)dx"></span></span>
+            <span class="var-item"><span data-formula-inline="b_n = \frac{1}{L}\int_{-L}^{L} f(x)\sin\!\left(\frac{n\pi x}{L}\right)dx"></span></span>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ======================== CÁLCULO MULTIVARIÁVEL ======================== -->
+      <section class="formula-section" data-section="multivariable">
+        <h3>🗺️ Cálculo Multivariável</h3>
+
+        <div class="formula-card">
+          <p class="formula-name">Derivadas Parciais</p>
+          <div class="formula-eq" data-formula="\frac{\partial f}{\partial x} = \lim_{h \to 0} \frac{f(x+h, y) - f(x, y)}{h}"></div>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Regra da Cadeia (Multivariável)</p>
+          <div class="formula-eq" data-formula="\frac{dz}{dt} = \frac{\partial z}{\partial x}\frac{dx}{dt} + \frac{\partial z}{\partial y}\frac{dy}{dt}"></div>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Gradiente, Divergente e Rotacional</p>
+          <table class="formula-table">
+            <tr>
+              <td>Gradiente</td>
+              <td><span data-formula-inline="\nabla f = \dfrac{\partial f}{\partial x}\hat{i} + \dfrac{\partial f}{\partial y}\hat{j} + \dfrac{\partial f}{\partial z}\hat{k}"></span></td>
+            </tr>
+            <tr>
+              <td>Divergente</td>
+              <td><span data-formula-inline="\nabla \cdot \vec{F} = \dfrac{\partial F_x}{\partial x} + \dfrac{\partial F_y}{\partial y} + \dfrac{\partial F_z}{\partial z}"></span></td>
+            </tr>
+            <tr>
+              <td>Rotacional</td>
+              <td><span data-formula-inline="\nabla \times \vec{F} = \begin{vmatrix}\hat{i} & \hat{j} & \hat{k}\\ \partial_x & \partial_y & \partial_z\\ F_x & F_y & F_z\end{vmatrix}"></span></td>
+            </tr>
+            <tr>
+              <td>Laplaciano</td>
+              <td><span data-formula-inline="\nabla^2 f = \dfrac{\partial^2 f}{\partial x^2} + \dfrac{\partial^2 f}{\partial y^2} + \dfrac{\partial^2 f}{\partial z^2}"></span></td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Diferencial Total</p>
+          <div class="formula-eq" data-formula="df = \frac{\partial f}{\partial x}dx + \frac{\partial f}{\partial y}dy + \frac{\partial f}{\partial z}dz"></div>
+          <p class="formula-desc">Essencial em termodinâmica — relaciona variações infinitesimais de funções de estado.</p>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Jacobiano</p>
+          <div class="formula-eq" data-formula="J = \frac{\partial(x,y)}{\partial(u,v)} = \begin{vmatrix} \dfrac{\partial x}{\partial u} & \dfrac{\partial x}{\partial v} \\[8pt] \dfrac{\partial y}{\partial u} & \dfrac{\partial y}{\partial v} \end{vmatrix}"></div>
+          <p class="formula-desc">Usado em mudança de variáveis em integrais duplas e triplas.</p>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Integrais Múltiplas</p>
+          <table class="formula-table">
+            <tr>
+              <td>Integral dupla</td>
+              <td><span data-formula-inline="\displaystyle\iint_R f(x,y)\,dA"></span></td>
+            </tr>
+            <tr>
+              <td>Integral tripla</td>
+              <td><span data-formula-inline="\displaystyle\iiint_V f(x,y,z)\,dV"></span></td>
+            </tr>
+            <tr>
+              <td>Coord. polares</td>
+              <td><span data-formula-inline="dA = r\,dr\,d\theta"></span></td>
+            </tr>
+            <tr>
+              <td>Coord. cilíndricas</td>
+              <td><span data-formula-inline="dV = r\,dr\,d\theta\,dz"></span></td>
+            </tr>
+            <tr>
+              <td>Coord. esféricas</td>
+              <td><span data-formula-inline="dV = \rho^2 \sin\phi\,d\rho\,d\phi\,d\theta"></span></td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Teoremas Vetoriais Fundamentais</p>
+          <table class="formula-table">
+            <tr>
+              <td>Green</td>
+              <td><span data-formula-inline="\displaystyle\oint_C (P\,dx + Q\,dy) = \iint_R \left(\frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y}\right)dA"></span></td>
+            </tr>
+            <tr>
+              <td>Stokes</td>
+              <td><span data-formula-inline="\displaystyle\oint_C \vec{F}\cdot d\vec{r} = \iint_S (\nabla \times \vec{F})\cdot d\vec{S}"></span></td>
+            </tr>
+            <tr>
+              <td>Gauss (Divergência)</td>
+              <td><span data-formula-inline="\displaystyle\oiint_S \vec{F}\cdot d\vec{S} = \iiint_V (\nabla \cdot \vec{F})\,dV"></span></td>
+            </tr>
+          </table>
+          <p class="formula-desc">Essenciais em transferência de calor, massa e mecânica dos fluidos.</p>
+        </div>
+      </section>
+
+
+      <!-- ======================== EDOs ======================== -->
+      <section class="formula-section" data-section="ode">
+        <h3>🧮 Equações Diferenciais Ordinárias</h3>
+
+        <div class="formula-card">
+          <p class="formula-name">EDO Separável</p>
+          <div class="formula-eq" data-formula="\frac{dy}{dx} = g(x)\,h(y) \;\Rightarrow\; \int \frac{dy}{h(y)} = \int g(x)\,dx"></div>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">EDO Linear de 1ª Ordem</p>
+          <div class="formula-eq" data-formula="\frac{dy}{dx} + P(x)\,y = Q(x)"></div>
+          <p class="formula-desc">Fator integrante: <span data-formula-inline="\mu(x) = e^{\int P(x)\,dx}"></span></p>
+          <div class="formula-eq" data-formula="y = \frac{1}{\mu(x)}\left[\int \mu(x)\,Q(x)\,dx + C\right]"></div>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">EDO Linear de 2ª Ordem (Coef. Constantes)</p>
+          <div class="formula-eq" data-formula="ay'' + by' + cy = 0 \;\Rightarrow\; ar^2 + br + c = 0"></div>
+          <table class="formula-table">
+            <tr>
+              <td>Raízes reais distintas</td>
+              <td><span data-formula-inline="y = C_1 e^{r_1 x} + C_2 e^{r_2 x}"></span></td>
+            </tr>
+            <tr>
+              <td>Raízes reais iguais</td>
+              <td><span data-formula-inline="y = (C_1 + C_2 x)\,e^{r x}"></span></td>
+            </tr>
+            <tr>
+              <td>Raízes complexas <span data-formula-inline="\alpha \pm \beta i"></span></td>
+              <td><span data-formula-inline="y = e^{\alpha x}(C_1 \cos\beta x + C_2 \sin\beta x)"></span></td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Equação de Bernoulli</p>
+          <div class="formula-eq" data-formula="\frac{dy}{dx} + P(x)\,y = Q(x)\,y^n"></div>
+          <p class="formula-desc">Substituição: <span data-formula-inline="v = y^{1-n}"></span> transforma em EDO linear.</p>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Equação Exata</p>
+          <div class="formula-eq" data-formula="M(x,y)\,dx + N(x,y)\,dy = 0 \quad\text{é exata se}\quad \frac{\partial M}{\partial y} = \frac{\partial N}{\partial x}"></div>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Método de Euler (Numérico)</p>
+          <div class="formula-eq" data-formula="y_{n+1} = y_n + h\,f(x_n, y_n)"></div>
+          <p class="formula-desc">Aproximação numérica para EDOs. Usado em simulações de reatores e processos transientes.</p>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Runge-Kutta 4ª Ordem (RK4)</p>
+          <div class="formula-eq" data-formula="y_{n+1} = y_n + \frac{h}{6}(k_1 + 2k_2 + 2k_3 + k_4)"></div>
+          <div class="formula-vars">
+            <span class="var-item"><span data-formula-inline="k_1 = f(x_n, y_n)"></span></span>
+            <span class="var-item"><span data-formula-inline="k_2 = f(x_n + h/2, y_n + hk_1/2)"></span></span>
+            <span class="var-item"><span data-formula-inline="k_3 = f(x_n + h/2, y_n + hk_2/2)"></span></span>
+            <span class="var-item"><span data-formula-inline="k_4 = f(x_n + h, y_n + hk_3)"></span></span>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ======================== TRANSFORMADA DE LAPLACE ======================== -->
+      <section class="formula-section" data-section="laplace">
+        <h3>🔁 Transformada de Laplace</h3>
+
+        <div class="formula-card">
+          <p class="formula-name">Definição</p>
+          <div class="formula-eq" data-formula="\mathcal{L}\{f(t)\} = F(s) = \int_0^\infty e^{-st} f(t)\,dt"></div>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Tabela de Transformadas</p>
+          <table class="formula-table">
+            <tr>
+              <td><span data-formula-inline="1"></span></td>
+              <td><span data-formula-inline="\dfrac{1}{s}"></span></td>
+            </tr>
+            <tr>
+              <td><span data-formula-inline="t^n"></span></td>
+              <td><span data-formula-inline="\dfrac{n!}{s^{n+1}}"></span></td>
+            </tr>
+            <tr>
+              <td><span data-formula-inline="e^{at}"></span></td>
+              <td><span data-formula-inline="\dfrac{1}{s - a}"></span></td>
+            </tr>
+            <tr>
+              <td><span data-formula-inline="\sin(at)"></span></td>
+              <td><span data-formula-inline="\dfrac{a}{s^2 + a^2}"></span></td>
+            </tr>
+            <tr>
+              <td><span data-formula-inline="\cos(at)"></span></td>
+              <td><span data-formula-inline="\dfrac{s}{s^2 + a^2}"></span></td>
+            </tr>
+            <tr>
+              <td><span data-formula-inline="t \cdot e^{at}"></span></td>
+              <td><span data-formula-inline="\dfrac{1}{(s - a)^2}"></span></td>
+            </tr>
+            <tr>
+              <td><span data-formula-inline="e^{at}\sin(bt)"></span></td>
+              <td><span data-formula-inline="\dfrac{b}{(s-a)^2 + b^2}"></span></td>
+            </tr>
+            <tr>
+              <td><span data-formula-inline="e^{at}\cos(bt)"></span></td>
+              <td><span data-formula-inline="\dfrac{s-a}{(s-a)^2 + b^2}"></span></td>
+            </tr>
+            <tr>
+              <td><span data-formula-inline="\delta(t)"></span> (impulso)</td>
+              <td><span data-formula-inline="1"></span></td>
+            </tr>
+            <tr>
+              <td><span data-formula-inline="u(t-a)"></span> (degrau)</td>
+              <td><span data-formula-inline="\dfrac{e^{-as}}{s}"></span></td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Propriedades da Transformada</p>
+          <table class="formula-table">
+            <tr>
+              <td>Linearidade</td>
+              <td><span data-formula-inline="\mathcal{L}\{af + bg\} = aF(s) + bG(s)"></span></td>
+            </tr>
+            <tr>
+              <td>Derivada no tempo</td>
+              <td><span data-formula-inline="\mathcal{L}\{f'(t)\} = sF(s) - f(0)"></span></td>
+            </tr>
+            <tr>
+              <td>2ª derivada</td>
+              <td><span data-formula-inline="\mathcal{L}\{f''(t)\} = s^2F(s) - sf(0) - f'(0)"></span></td>
+            </tr>
+            <tr>
+              <td>Deslocamento em s</td>
+              <td><span data-formula-inline="\mathcal{L}\{e^{at}f(t)\} = F(s - a)"></span></td>
+            </tr>
+            <tr>
+              <td>Deslocamento em t</td>
+              <td><span data-formula-inline="\mathcal{L}\{u(t-a)f(t-a)\} = e^{-as}F(s)"></span></td>
+            </tr>
+            <tr>
+              <td>Convolução</td>
+              <td><span data-formula-inline="\mathcal{L}\{f * g\} = F(s) \cdot G(s)"></span></td>
+            </tr>
+            <tr>
+              <td>Valor final</td>
+              <td><span data-formula-inline="\lim_{t\to\infty}f(t) = \lim_{s\to 0}sF(s)"></span></td>
+            </tr>
+            <tr>
+              <td>Valor inicial</td>
+              <td><span data-formula-inline="\lim_{t\to 0^+}f(t) = \lim_{s\to\infty}sF(s)"></span></td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Inversa de Laplace</p>
+          <div class="formula-eq" data-formula="\mathcal{L}^{-1}\{F(s)\} = f(t) = \frac{1}{2\pi i}\int_{\gamma - i\infty}^{\gamma + i\infty} e^{st}F(s)\,ds"></div>
+          <p class="formula-desc">Na prática, usa-se decomposição em frações parciais e a tabela de transformadas inversas.</p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ========== Footer ========== -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; 2026 Q-Engineering Hub — <a href="https://github.com/bryanmzauza/Q-Engineering-Hub" target="_blank" rel="noopener">GitHub</a></p>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/modules/calculus.js"></script>
+
+  <!-- KaTeX rendering -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      function renderKatex() {
+        document.querySelectorAll('[data-formula]').forEach((el) => {
+          try {
+            katex.render(el.getAttribute('data-formula'), el, {
+              displayMode: true,
+              throwOnError: false,
+              strict: false
+            });
+          } catch (e) {
+            el.textContent = el.getAttribute('data-formula');
+          }
+        });
+
+        document.querySelectorAll('[data-formula-inline]').forEach((el) => {
+          try {
+            katex.render(el.getAttribute('data-formula-inline'), el, {
+              displayMode: false,
+              throwOnError: false,
+              strict: false
+            });
+          } catch (e) {
+            el.textContent = el.getAttribute('data-formula-inline');
+          }
+        });
+      }
+
+      if (typeof katex !== 'undefined') {
+        renderKatex();
+      } else {
+        const interval = setInterval(() => {
+          if (typeof katex !== 'undefined') {
+            clearInterval(interval);
+            renderKatex();
+          }
+        }, 50);
+      }
+    });
+  </script>
+</body>
+</html>
