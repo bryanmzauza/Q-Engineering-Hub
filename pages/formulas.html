@@ -255,6 +255,63 @@
             <span class="var-item"><span data-formula-inline="T"></span> = temperatura</span>
           </div>
         </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Energia Livre de Gibbs</p>
+          <div class="formula-eq" data-formula="\Delta G = \Delta H - T \cdot \Delta S"></div>
+          <p class="formula-desc">Critério de espontaneidade de reações e processos à temperatura e pressão constantes.</p>
+          <p class="formula-context"><strong>Contexto:</strong> Avaliação de viabilidade termodinâmica de reações, cálculo de constantes de equilíbrio e análise de processos eletroquímicos.</p>
+          <div class="formula-vars">
+            <span class="var-item"><span data-formula-inline="\Delta G"></span> = variação de energia de Gibbs</span>
+            <span class="var-item"><span data-formula-inline="\Delta H"></span> = variação de entalpia</span>
+            <span class="var-item"><span data-formula-inline="\Delta S"></span> = variação de entropia</span>
+          </div>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Constante de Equilíbrio Termodinâmica</p>
+          <div class="formula-eq" data-formula="\Delta G^\circ = -R \cdot T \cdot \ln K"></div>
+          <p class="formula-desc">Relaciona a energia de Gibbs padrão com a constante de equilíbrio da reação.</p>
+          <p class="formula-context"><strong>Contexto:</strong> Determinação da extensão de reações químicas, cálculo de composição de equilíbrio em reatores e processos de separação.</p>
+          <div class="formula-vars">
+            <span class="var-item"><span data-formula-inline="K"></span> = constante de equilíbrio</span>
+            <span class="var-item"><span data-formula-inline="\Delta G^\circ"></span> = energia de Gibbs padrão</span>
+          </div>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Lei de Dalton</p>
+          <div class="formula-eq" data-formula="P_{\text{total}} = \sum_{i} p_i = \sum_{i} y_i \cdot P"></div>
+          <p class="formula-desc">A pressão total de uma mistura gasosa é a soma das pressões parciais dos componentes.</p>
+          <p class="formula-context"><strong>Contexto:</strong> Cálculos de composição de misturas gasosas, equilíbrio de fases e dimensionamento de equipamentos que operam com gases.</p>
+          <div class="formula-vars">
+            <span class="var-item"><span data-formula-inline="p_i"></span> = pressão parcial do componente i</span>
+            <span class="var-item"><span data-formula-inline="y_i"></span> = fração molar na fase gasosa</span>
+          </div>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Equação Virial (2° Coeficiente)</p>
+          <div class="formula-eq" data-formula="\frac{PV}{nRT} = Z = 1 + \frac{B}{V} + \frac{C}{V^2} + \cdots"></div>
+          <p class="formula-desc">Equação de estado na forma de série de potências do inverso do volume molar.</p>
+          <p class="formula-context"><strong>Contexto:</strong> Modelagem de desvios da idealidade em gases a pressões moderadas; o fator de compressibilidade Z indica o quão real é o comportamento do gás.</p>
+          <div class="formula-vars">
+            <span class="var-item"><span data-formula-inline="Z"></span> = fator de compressibilidade</span>
+            <span class="var-item"><span data-formula-inline="B, C"></span> = coeficientes viriais</span>
+          </div>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Variação de Entropia (Gás Ideal)</p>
+          <div class="formula-eq" data-formula="\Delta S = n \cdot C_p \cdot \ln\!\left(\frac{T_2}{T_1}\right) - n \cdot R \cdot \ln\!\left(\frac{P_2}{P_1}\right)"></div>
+          <p class="formula-desc">Variação de entropia de um gás ideal entre dois estados.</p>
+          <p class="formula-context"><strong>Contexto:</strong> Análise de eficiência de compressores e turbinas, cálculo de irreversibilidades e análise exergética de processos.</p>
+          <div class="formula-vars">
+            <span class="var-item"><span data-formula-inline="C_p"></span> = capacidade calorífica a pressão constante</span>
+            <span class="var-item"><span data-formula-inline="T_1, T_2"></span> = temperaturas inicial e final</span>
+            <span class="var-item"><span data-formula-inline="P_1, P_2"></span> = pressões inicial e final</span>
+          </div>
+        </div>
       </section>
 
       <!-- ---- Balanço de Massa ---- -->
@@ -273,6 +330,37 @@
           <div class="formula-eq" data-formula="\sum \dot{m}_{\text{entrada}} = \sum \dot{m}_{\text{saída}}"></div>
           <p class="formula-desc">Simplificação para regime permanente sem reação química.</p>
           <p class="formula-context"><strong>Contexto:</strong> Análise de processos contínuos em regime permanente: misturadores, divisores de corrente e processos de separação sem reação.</p>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Balanço por Componente</p>
+          <div class="formula-eq" data-formula="\frac{dn_i}{dt} = \dot{n}_{i,\text{in}} - \dot{n}_{i,\text{out}} + \nu_i \cdot \xi"></div>
+          <p class="formula-desc">Balanço molar para o componente i, considerando a estequiometria da reação.</p>
+          <p class="formula-context"><strong>Contexto:</strong> Projeto de reatores e separadores multicomponentes; análise de processos com múltiplas reações simultâneas.</p>
+          <div class="formula-vars">
+            <span class="var-item"><span data-formula-inline="\dot{n}_i"></span> = vazão molar do componente i</span>
+            <span class="var-item"><span data-formula-inline="\nu_i"></span> = coeficiente estequiométrico</span>
+            <span class="var-item"><span data-formula-inline="\xi"></span> = extensão da reação</span>
+          </div>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Conversão, Rendimento e Seletividade</p>
+          <div class="formula-eq" data-formula="X_A = \frac{n_{A0} - n_A}{n_{A0}} \qquad Y = \frac{n_{\text{desejado}}}{n_{\text{desejado, máx}}} \qquad S = \frac{n_{\text{desejado}}}{n_{\text{desejado}} + n_{\text{indesejado}}}"></div>
+          <p class="formula-desc">Métricas fundamentais de desempenho de processos reativos.</p>
+          <p class="formula-context"><strong>Contexto:</strong> Avaliação de eficiência de reatores, otimização de condições operacionais e comparação entre rotas de síntese.</p>
+          <div class="formula-vars">
+            <span class="var-item"><span data-formula-inline="X_A"></span> = conversão do reagente A</span>
+            <span class="var-item"><span data-formula-inline="Y"></span> = rendimento</span>
+            <span class="var-item"><span data-formula-inline="S"></span> = seletividade</span>
+          </div>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Graus de Liberdade</p>
+          <div class="formula-eq" data-formula="\text{GL} = n_{\text{variáveis}} - n_{\text{equações}}"></div>
+          <p class="formula-desc">Análise de graus de liberdade para verificar se o sistema é determinado.</p>
+          <p class="formula-context"><strong>Contexto:</strong> Primeira etapa da resolução de qualquer problema de balanço — se GL = 0 o sistema possui solução única; GL &gt; 0 indica informações insuficientes.</p>
         </div>
       </section>
 
@@ -310,6 +398,38 @@
           <p class="formula-desc">Calor associado à mudança de fase (vaporização, fusão, etc.).</p>
           <p class="formula-context"><strong>Contexto:</strong> Projeto de evaporadores, condensadores, caldeiras e processos de cristalização que envolvem transição de fase.</p>
         </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Lei de Hess — Entalpia de Reação</p>
+          <div class="formula-eq" data-formula="\Delta H_{\text{rxn}}^\circ = \sum \nu_i \cdot \Delta H_{f,i}^\circ \;(\text{produtos}) - \sum \nu_i \cdot \Delta H_{f,i}^\circ \;(\text{reagentes})"></div>
+          <p class="formula-desc">Entalpia padrão de reação a partir das entalpias de formação.</p>
+          <p class="formula-context"><strong>Contexto:</strong> Cálculo de calor de reação para balanço energético de reatores, determinação se a reação é exotérmica ou endotérmica.</p>
+          <div class="formula-vars">
+            <span class="var-item"><span data-formula-inline="\Delta H_{f,i}^\circ"></span> = entalpia de formação padrão</span>
+            <span class="var-item"><span data-formula-inline="\nu_i"></span> = coeficiente estequiométrico</span>
+          </div>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Trabalho de Compressão Isentrópica</p>
+          <div class="formula-eq" data-formula="W_s = \frac{\gamma}{\gamma - 1} \cdot P_1 V_1 \left[\left(\frac{P_2}{P_1}\right)^{\frac{\gamma - 1}{\gamma}} - 1\right]"></div>
+          <p class="formula-desc">Trabalho de eixo para compressão adiabática reversível de gás ideal.</p>
+          <p class="formula-context"><strong>Contexto:</strong> Dimensionamento de compressores, cálculo de potência e estimativa de temperatura de saída em ciclos de refrigeração e processos industriais.</p>
+          <div class="formula-vars">
+            <span class="var-item"><span data-formula-inline="\gamma = C_p / C_v"></span> = razão de capacidades caloríficas</span>
+            <span class="var-item"><span data-formula-inline="P_1, P_2"></span> = pressões de entrada e saída</span>
+          </div>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Equação de Kirchhoff</p>
+          <div class="formula-eq" data-formula="\Delta H_{\text{rxn}}(T_2) = \Delta H_{\text{rxn}}(T_1) + \int_{T_1}^{T_2} \Delta C_p \, dT"></div>
+          <p class="formula-desc">Correção da entalpia de reação para temperaturas diferentes da temperatura de referência.</p>
+          <p class="formula-context"><strong>Contexto:</strong> Cálculos de balanço energético em reatores operando a temperaturas elevadas ou em processos com grande variação térmica.</p>
+          <div class="formula-vars">
+            <span class="var-item"><span data-formula-inline="\Delta C_p"></span> = diferença de Cp entre produtos e reagentes</span>
+          </div>
+        </div>
       </section>
 
       <!-- ---- Reatores Químicos ---- -->
@@ -343,6 +463,41 @@
           <div class="formula-vars">
             <span class="var-item"><span data-formula-inline="V"></span> = volume do reator</span>
             <span class="var-item"><span data-formula-inline="v_0"></span> = vazão volumétrica de entrada</span>
+          </div>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Equação de Arrhenius</p>
+          <div class="formula-eq" data-formula="k = A \cdot e^{-E_a / (RT)}"></div>
+          <p class="formula-desc">Dependência da constante cinética com a temperatura.</p>
+          <p class="formula-context"><strong>Contexto:</strong> Modelagem cinética de reações, determinação de temperatura ótima de operação de reatores e estimativa de parâmetros cinéticos a partir de dados experimentais.</p>
+          <div class="formula-vars">
+            <span class="var-item"><span data-formula-inline="A"></span> = fator pré-exponencial</span>
+            <span class="var-item"><span data-formula-inline="E_a"></span> = energia de ativação</span>
+            <span class="var-item"><span data-formula-inline="R"></span> = constante dos gases</span>
+          </div>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Lei de Potência (Cinética)</p>
+          <div class="formula-eq" data-formula="-r_A = k \cdot C_A^\alpha \cdot C_B^\beta"></div>
+          <p class="formula-desc">Modelo cinético empírico de taxa de reação.</p>
+          <p class="formula-context"><strong>Contexto:</strong> Determinação experimental de ordens de reação, modelagem de reatores e simulação de processos reativos.</p>
+          <div class="formula-vars">
+            <span class="var-item"><span data-formula-inline="k"></span> = constante cinética</span>
+            <span class="var-item"><span data-formula-inline="\alpha, \beta"></span> = ordens de reação</span>
+            <span class="var-item"><span data-formula-inline="C_A, C_B"></span> = concentrações</span>
+          </div>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Reator Batelada</p>
+          <div class="formula-eq" data-formula="t = N_{A0} \int_0^X \frac{dX}{(-r_A) \cdot V}"></div>
+          <p class="formula-desc">Tempo necessário para atingir uma conversão desejada em reator batelada.</p>
+          <p class="formula-context"><strong>Contexto:</strong> Processos farmacêuticos, produção de especialidades químicas e polímeros onde operação em batelada é preferida.</p>
+          <div class="formula-vars">
+            <span class="var-item"><span data-formula-inline="N_{A0}"></span> = mols iniciais de A</span>
+            <span class="var-item"><span data-formula-inline="t"></span> = tempo de reação</span>
           </div>
         </div>
       </section>
@@ -385,6 +540,54 @@
             <span class="var-item"><span data-formula-inline="f"></span> = fator de atrito</span>
             <span class="var-item"><span data-formula-inline="L"></span> = comprimento</span>
             <span class="var-item"><span data-formula-inline="D"></span> = diâmetro</span>
+          </div>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Equação da Continuidade</p>
+          <div class="formula-eq" data-formula="\rho_1 \cdot A_1 \cdot v_1 = \rho_2 \cdot A_2 \cdot v_2"></div>
+          <p class="formula-desc">Conservação de massa para escoamento em regime permanente.</p>
+          <p class="formula-context"><strong>Contexto:</strong> Cálculo de velocidades em tubulações com mudanças de seção, análise de bocais, venturis e medidores de vazão.</p>
+          <div class="formula-vars">
+            <span class="var-item"><span data-formula-inline="\rho"></span> = densidade</span>
+            <span class="var-item"><span data-formula-inline="A"></span> = área da seção transversal</span>
+            <span class="var-item"><span data-formula-inline="v"></span> = velocidade do fluido</span>
+          </div>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Equação de Hagen-Poiseuille</p>
+          <div class="formula-eq" data-formula="\Delta P = \frac{128 \cdot \mu \cdot L \cdot Q}{\pi \cdot D^4}"></div>
+          <p class="formula-desc">Perda de pressão em escoamento laminar em tubo circular.</p>
+          <p class="formula-context"><strong>Contexto:</strong> Escoamento de fluidos viscosos (óleos, polímeros fundidos) em tubulações estreitas e microcanais; válida apenas para Re &lt; 2100.</p>
+          <div class="formula-vars">
+            <span class="var-item"><span data-formula-inline="Q"></span> = vazão volumétrica</span>
+            <span class="var-item"><span data-formula-inline="\mu"></span> = viscosidade dinâmica</span>
+            <span class="var-item"><span data-formula-inline="D"></span> = diâmetro do tubo</span>
+          </div>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Potência de Bomba</p>
+          <div class="formula-eq" data-formula="\dot{W}_{\text{bomba}} = \frac{\rho \cdot g \cdot Q \cdot H}{\eta}"></div>
+          <p class="formula-desc">Potência requerida para bombear fluido a uma determinada altura manométrica.</p>
+          <p class="formula-context"><strong>Contexto:</strong> Seleção e dimensionamento de bombas industriais, cálculo de custos operacionais de sistemas de bombeamento.</p>
+          <div class="formula-vars">
+            <span class="var-item"><span data-formula-inline="H"></span> = altura manométrica total</span>
+            <span class="var-item"><span data-formula-inline="\eta"></span> = eficiência da bomba</span>
+            <span class="var-item"><span data-formula-inline="Q"></span> = vazão volumétrica</span>
+          </div>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Equação de Ergun (Leito Empacotado)</p>
+          <div class="formula-eq" data-formula="\frac{\Delta P}{L} = \frac{150 \cdot \mu \cdot v_s \cdot (1 - \varepsilon)^2}{D_p^2 \cdot \varepsilon^3} + \frac{1{,}75 \cdot \rho \cdot v_s^2 \cdot (1 - \varepsilon)}{D_p \cdot \varepsilon^3}"></div>
+          <p class="formula-desc">Perda de pressão através de leitos fixos de partículas.</p>
+          <p class="formula-context"><strong>Contexto:</strong> Projeto de reatores de leito fixo catalítico, colunas de recheio para absorção/destilação e filtros industriais.</p>
+          <div class="formula-vars">
+            <span class="var-item"><span data-formula-inline="\varepsilon"></span> = porosidade do leito</span>
+            <span class="var-item"><span data-formula-inline="D_p"></span> = diâmetro da partícula</span>
+            <span class="var-item"><span data-formula-inline="v_s"></span> = velocidade superficial</span>
           </div>
         </div>
       </section>
@@ -437,6 +640,41 @@
             <span class="var-item"><span data-formula-inline="A"></span> = área de troca</span>
           </div>
         </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Resistência Térmica em Série</p>
+          <div class="formula-eq" data-formula="\frac{1}{U \cdot A} = \frac{1}{h_i \cdot A_i} + \frac{\ln(r_o / r_i)}{2\pi \cdot k \cdot L} + \frac{1}{h_o \cdot A_o}"></div>
+          <p class="formula-desc">Coeficiente global de troca considerando resistências convectivas e condutiva em tubos cilíndricos.</p>
+          <p class="formula-context"><strong>Contexto:</strong> Cálculo do coeficiente global U em trocadores casco-tubo, incluindo resistências de incrustação (fouling).</p>
+          <div class="formula-vars">
+            <span class="var-item"><span data-formula-inline="h_i, h_o"></span> = coeficientes de convecção interno e externo</span>
+            <span class="var-item"><span data-formula-inline="r_i, r_o"></span> = raios interno e externo do tubo</span>
+            <span class="var-item"><span data-formula-inline="k"></span> = condutividade da parede</span>
+          </div>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Número de Nusselt</p>
+          <div class="formula-eq" data-formula="\text{Nu} = \frac{h \cdot D}{k}"></div>
+          <p class="formula-desc">Adimensional que relaciona transferência convectiva e condutiva de calor.</p>
+          <p class="formula-context"><strong>Contexto:</strong> Estimativa do coeficiente h a partir de correlações empíricas (Dittus-Boelter, Sieder-Tate) para projeto de trocadores de calor.</p>
+          <div class="formula-vars">
+            <span class="var-item"><span data-formula-inline="h"></span> = coeficiente de convecção</span>
+            <span class="var-item"><span data-formula-inline="D"></span> = comprimento característico</span>
+            <span class="var-item"><span data-formula-inline="k"></span> = condutividade térmica do fluido</span>
+          </div>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Correlação de Dittus-Boelter</p>
+          <div class="formula-eq" data-formula="\text{Nu} = 0{,}023 \cdot \text{Re}^{0{,}8} \cdot \text{Pr}^{n}"></div>
+          <p class="formula-desc">Correlação para convecção forçada turbulenta em tubos (n = 0,4 para aquecimento, 0,3 para resfriamento).</p>
+          <p class="formula-context"><strong>Contexto:</strong> Estimativa rápida do coeficiente de convecção para escoamento turbulento (Re > 10.000) em tubos lisos — amplamente usada em projeto de trocadores.</p>
+          <div class="formula-vars">
+            <span class="var-item"><span data-formula-inline="\text{Re}"></span> = número de Reynolds</span>
+            <span class="var-item"><span data-formula-inline="\text{Pr} = \frac{\mu \cdot C_p}{k}"></span> = número de Prandtl</span>
+          </div>
+        </div>
       </section>
 
       <!-- ---- Transferência de Massa ---- -->
@@ -461,6 +699,42 @@
           <p class="formula-context"><strong>Contexto:</strong> Projeto de torres de absorção, extração líquido-líquido e colunas de destilação com recheio.</p>
           <div class="formula-vars">
             <span class="var-item"><span data-formula-inline="k_c"></span> = coeficiente de transferência de massa</span>
+          </div>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Lei de Henry</p>
+          <div class="formula-eq" data-formula="p_A = H \cdot x_A"></div>
+          <p class="formula-desc">Relaciona a pressão parcial de um gás com sua fração molar em solução diluída.</p>
+          <p class="formula-context"><strong>Contexto:</strong> Projeto de torres de absorção de gases, tratamento de efluentes gasosos e análise de solubilidade de gases em líquidos.</p>
+          <div class="formula-vars">
+            <span class="var-item"><span data-formula-inline="H"></span> = constante de Henry</span>
+            <span class="var-item"><span data-formula-inline="x_A"></span> = fração molar no líquido</span>
+            <span class="var-item"><span data-formula-inline="p_A"></span> = pressão parcial do gás</span>
+          </div>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Número de Sherwood</p>
+          <div class="formula-eq" data-formula="\text{Sh} = \frac{k_c \cdot D}{D_{AB}}"></div>
+          <p class="formula-desc">Adimensional análogo ao Nusselt, para transferência de massa convectiva.</p>
+          <p class="formula-context"><strong>Contexto:</strong> Estimativa de coeficientes de transferência de massa via correlações empíricas para projeto de torres, reatores e processos de cristalização.</p>
+          <div class="formula-vars">
+            <span class="var-item"><span data-formula-inline="k_c"></span> = coeficiente de transferência de massa</span>
+            <span class="var-item"><span data-formula-inline="D"></span> = comprimento característico</span>
+            <span class="var-item"><span data-formula-inline="D_{AB}"></span> = coeficiente de difusão</span>
+          </div>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Analogia de Chilton-Colburn</p>
+          <div class="formula-eq" data-formula="j_H = j_D = \frac{f}{2} \qquad \text{onde} \qquad j_H = \text{St} \cdot \text{Pr}^{2/3}, \quad j_D = \text{St}_m \cdot \text{Sc}^{2/3}"></div>
+          <p class="formula-desc">Analogia entre transferência de calor, massa e quantidade de movimento.</p>
+          <p class="formula-context"><strong>Contexto:</strong> Estimativa de coeficientes de transferência de massa a partir de dados de transferência de calor (e vice-versa), útil quando dados experimentais são limitados.</p>
+          <div class="formula-vars">
+            <span class="var-item"><span data-formula-inline="\text{St}"></span> = número de Stanton</span>
+            <span class="var-item"><span data-formula-inline="\text{Sc} = \frac{\mu}{\rho \cdot D_{AB}}"></span> = número de Schmidt</span>
+            <span class="var-item"><span data-formula-inline="f"></span> = fator de atrito</span>
           </div>
         </div>
       </section>
@@ -491,6 +765,51 @@
           <div class="formula-eq" data-formula="R_{\min} = \frac{1}{\alpha - 1}\left(\frac{x_D}{x_F} - \alpha \cdot \frac{1 - x_D}{1 - x_F}\right)"></div>
           <p class="formula-desc">Razão de refluxo mínima para separação em destilação.</p>
           <p class="formula-context"><strong>Contexto:</strong> Projeto de colunas de destilação — definição da razão de refluxo operacional e número mínimo de estágios teóricos.</p>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Equação de Fenske (Estágios Mínimos)</p>
+          <div class="formula-eq" data-formula="N_{\min} = \frac{\ln\!\left(\dfrac{x_{D,LK}}{x_{D,HK}} \cdot \dfrac{x_{B,HK}}{x_{B,LK}}\right)}{\ln(\alpha_{LK/HK})}"></div>
+          <p class="formula-desc">Número mínimo de estágios teóricos a refluxo total.</p>
+          <p class="formula-context"><strong>Contexto:</strong> Estimativa preliminar do número de pratos de uma coluna de destilação, utilizada junto com Underwood e Gilliland no método short-cut.</p>
+          <div class="formula-vars">
+            <span class="var-item"><span data-formula-inline="x_{D}, x_{B}"></span> = composições do destilado e fundo</span>
+            <span class="var-item"><span data-formula-inline="LK, HK"></span> = chave leve e chave pesada</span>
+          </div>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Eficiência de Murphree</p>
+          <div class="formula-eq" data-formula="E_{MV} = \frac{y_n - y_{n+1}}{y_n^* - y_{n+1}}"></div>
+          <p class="formula-desc">Eficiência de um prato real em relação ao equilíbrio teórico.</p>
+          <p class="formula-context"><strong>Contexto:</strong> Conversão de estágios teóricos em pratos reais no projeto de colunas de destilação e absorção; valores típicos entre 50–80%.</p>
+          <div class="formula-vars">
+            <span class="var-item"><span data-formula-inline="y_n"></span> = composição real saindo do prato n</span>
+            <span class="var-item"><span data-formula-inline="y_n^*"></span> = composição em equilíbrio com o líquido do prato n</span>
+          </div>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Lei de Raoult Modificada</p>
+          <div class="formula-eq" data-formula="y_i \cdot P = x_i \cdot \gamma_i \cdot P_i^{\,*}"></div>
+          <p class="formula-desc">Lei de Raoult com coeficiente de atividade para misturas não ideais.</p>
+          <p class="formula-context"><strong>Contexto:</strong> Cálculos de equilíbrio líquido-vapor para misturas que desviam da idealidade (ex.: etanol-água), usando modelos como NRTL, Wilson ou UNIQUAC.</p>
+          <div class="formula-vars">
+            <span class="var-item"><span data-formula-inline="\gamma_i"></span> = coeficiente de atividade</span>
+            <span class="var-item"><span data-formula-inline="P_i^{\,*}"></span> = pressão de vapor do componente puro</span>
+          </div>
+        </div>
+
+        <div class="formula-card">
+          <p class="formula-name">Altura de Unidade de Transferência (HTU-NTU)</p>
+          <div class="formula-eq" data-formula="Z = \text{HTU} \cdot \text{NTU} = \frac{G}{k_y \cdot a} \cdot \int_{y_1}^{y_2} \frac{dy}{y - y^*}"></div>
+          <p class="formula-desc">Altura de recheio para colunas de absorção e destilação.</p>
+          <p class="formula-context"><strong>Contexto:</strong> Dimensionamento de colunas de recheio para absorção de gases (ex.: remoção de CO₂, SO₂) e destilação com recheio estruturado.</p>
+          <div class="formula-vars">
+            <span class="var-item"><span data-formula-inline="Z"></span> = altura de recheio</span>
+            <span class="var-item"><span data-formula-inline="\text{HTU}"></span> = altura de unidade de transferência</span>
+            <span class="var-item"><span data-formula-inline="\text{NTU}"></span> = número de unidades de transferência</span>
+          </div>
         </div>
       </section>
 
