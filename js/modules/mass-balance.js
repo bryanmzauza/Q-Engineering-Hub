@@ -128,7 +128,7 @@
       } else {
         resultVal.textContent = '✗ Balanço não fecha';
         resultVal.style.color = 'var(--danger)';
-        resultDetail.textContent = `Σ Entradas = ${fmt(sumIn)} kg/h ≠ Σ Saídas = ${fmt(sumOut)} kg/h — Diferença: ${fmt(diff)} kg/h`;
+        resultDetail.textContent = `Σ Entradas = ${fmt(sumIn)} kg/h ≠ Σ Saídas = ${fmt(sumOut)} kg/h | Diferença: ${fmt(diff)} kg/h`;
       }
     } else if (unknowns === 1) {
       let result;
@@ -140,7 +140,7 @@
       if (result < 0) {
         resultVal.textContent = '⚠ Resultado negativo';
         resultVal.style.color = 'var(--warning)';
-        resultDetail.textContent = `${unknownType} ${unknownIndex} = ${fmt(result)} kg/h — Verifique os valores de entrada.`;
+        resultDetail.textContent = `${unknownType} ${unknownIndex} = ${fmt(result)} kg/h (verifique os valores de entrada)`;
       } else {
         unknownEl.value = parseFloat(result.toFixed(6));
         resultVal.textContent = `${fmt(result)} kg/h`;
@@ -329,7 +329,7 @@
     components.forEach((c, i) => {
       fieldsHtml += `
         <div class="field">
-          <label>x(${c}) — fração mássica</label>
+          <label>x(${c}): fração mássica</label>
           <input type="number" class="multi-frac" data-comp="${i}" placeholder="0–1" step="0.001" min="0" max="1" />
         </div>`;
     });

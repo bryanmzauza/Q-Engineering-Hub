@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Balanço de Massa — Calculadoras para sistemas com e sem reação química — Q-Engineering Hub" />
-  <title>Balanço de Massa — Q-Engineering Hub</title>
+  <meta name="description" content="Balanço de Massa | Calculadoras para sistemas com e sem reação química | Q-Engineering Hub" />
+  <title>Balanço de Massa | Q-Engineering Hub</title>
   <link rel="stylesheet" href="../css/style.css" />
   <!-- KaTeX -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous" />
@@ -498,124 +498,304 @@
     <main class="main-content">
       <button class="menu-toggle" id="sidebarToggle" aria-label="Abrir sidebar">☰</button>
 
-      <h2 class="page-title">⚖️ Balanço de Massa</h2>
-      <p class="page-subtitle">Calculadoras e referência teórica para balanços materiais em processos químicos — com e sem reação.</p>
+      <h2 class="page-title">Balanço de Massa</h2>
+      <p class="page-subtitle">Calculadoras e referência teórica para balanços materiais em processos químicos, com e sem reação.</p>
 
       <!-- Tab Navigation -->
       <div class="mb-tabs" role="tablist" aria-label="Seções do Balanço de Massa">
-        <button class="mb-tab active" data-tab="theory" role="tab" aria-selected="true">📖 Teoria</button>
-        <button class="mb-tab" data-tab="simple" role="tab" aria-selected="false">🧮 Sem Reação</button>
-        <button class="mb-tab" data-tab="reaction" role="tab" aria-selected="false">⚗️ Com Reação</button>
-        <button class="mb-tab" data-tab="multicomponent" role="tab" aria-selected="false">🔬 Multicomponente</button>
-        <button class="mb-tab" data-tab="recycle" role="tab" aria-selected="false">♻️ Reciclo</button>
+        <button class="mb-tab active" data-tab="theory" role="tab" aria-selected="true">Teoria</button>
+        <button class="mb-tab" data-tab="simple" role="tab" aria-selected="false">Sem Reação</button>
+        <button class="mb-tab" data-tab="reaction" role="tab" aria-selected="false">Com Reação</button>
+        <button class="mb-tab" data-tab="multicomponent" role="tab" aria-selected="false">Multicomponente</button>
+        <button class="mb-tab" data-tab="recycle" role="tab" aria-selected="false">Reciclo</button>
       </div>
 
       <!-- ===================== THEORY TAB ===================== -->
       <section class="mb-panel active" id="panel-theory" role="tabpanel">
 
-        <h3 class="section-heading">📐 Fundamentos do Balanço de Massa</h3>
+        <h3 class="section-heading">Fundamentos do Balanço de Massa</h3>
 
         <div class="theory-card">
           <h4>Princípio da Conservação da Massa</h4>
-          <p>A massa não pode ser criada nem destruída (em processos não nucleares). Para qualquer sistema, a taxa de acúmulo de massa é igual à diferença entre o que entra e o que sai, mais o que é gerado e menos o que é consumido.</p>
-          <div class="theory-eq" data-formula="\text{Acúmulo} = \text{Entrada} - \text{Saída} + \text{Geração} - \text{Consumo}"></div>
+          <p>A lei da conservação da massa, formulada por Lavoisier no século XVIII, estabelece que a massa não pode ser criada nem destruída em processos químicos e físicos ordinários (excluindo reações nucleares). Para qualquer sistema definido por um volume de controle, a taxa de acúmulo de massa é determinada pela diferença entre o que entra e o que sai, somada ao que é gerado e subtraída do que é consumido por reações químicas.</p>
+          <div class="theory-eq" data-formula="\text{Ac\'{u}mulo} = \text{Entrada} - \text{Sa\'{i}da} + \text{Gera\c{c}\~{a}o} - \text{Consumo}"></div>
+          <p style="margin-top: 0.75rem;">Essa equação é a base de todo projeto e análise de processos químicos. Ela se aplica tanto à massa total quanto a cada espécie química individualmente. Para a massa total, os termos de geração e consumo se cancelam (a massa total é conservada mesmo com reação), mas para espécies individuais esses termos são essenciais.</p>
         </div>
 
         <div class="theory-card">
           <h4>Equação Geral (Forma Diferencial)</h4>
-          <p>Para um volume de controle, o balanço de massa geral em regime transiente é:</p>
+          <p>Para um volume de controle arbitrário, o balanço de massa em regime transiente é escrito na forma diferencial como:</p>
           <div class="theory-eq" data-formula="\frac{dm_{sis}}{dt} = \sum \dot{m}_{in} - \sum \dot{m}_{out} + \sum r_i \cdot V"></div>
-          <p style="margin-top: 0.5rem;">Onde:</p>
+          <p style="margin-top: 0.5rem;">Cada variável representa:</p>
           <ul>
-            <li><span data-formula-inline="m_{sis}"></span> — massa total no sistema (kg)</li>
-            <li><span data-formula-inline="\dot{m}_{in}, \dot{m}_{out}"></span> — vazões mássicas de entrada e saída (kg/s)</li>
-            <li><span data-formula-inline="r_i"></span> — taxa de reação da espécie <em>i</em> (kg/m³·s)</li>
-            <li><span data-formula-inline="V"></span> — volume do sistema (m³)</li>
+            <li><span data-formula-inline="m_{sis}"></span>: massa total no sistema (kg)</li>
+            <li><span data-formula-inline="\dot{m}_{in}, \dot{m}_{out}"></span>: vazões mássicas de entrada e saída (kg/s)</li>
+            <li><span data-formula-inline="r_i"></span>: taxa volumétrica de reação da espécie <em>i</em> (kg/m³·s)</li>
+            <li><span data-formula-inline="V"></span>: volume do sistema (m³)</li>
+          </ul>
+          <p style="margin-top: 0.75rem;">Em termos molares, a equação equivalente é:</p>
+          <div class="theory-eq" data-formula="\frac{dn_i}{dt} = \sum \dot{n}_{i,in} - \sum \dot{n}_{i,out} + \nu_i \cdot \dot{\xi}"></div>
+          <p style="margin-top: 0.5rem;">onde <span data-formula-inline="\dot{n}_i"></span> são vazões molares (mol/s), <span data-formula-inline="\nu_i"></span> é o coeficiente estequiométrico da espécie <em>i</em> e <span data-formula-inline="\dot{\xi}"></span> é a taxa de extensão da reação.</p>
+        </div>
+
+        <h3 class="section-heading">Classificação de Sistemas e Regimes</h3>
+
+        <div class="theory-card">
+          <h4>Tipos de Sistemas</h4>
+          <p>É fundamental classificar o sistema antes de iniciar o balanço:</p>
+          <ul>
+            <li><strong>Sistema aberto (volume de controle):</strong> permite a passagem de massa através de suas fronteiras. Exemplos incluem reatores contínuos (CSTR, PFR), colunas de destilação, trocadores de calor, misturadores e bombas.</li>
+            <li><strong>Sistema fechado (massa de controle):</strong> não há troca de massa com a vizinhança, apenas de energia. Exemplos incluem reatores batelada, autoclaves e tanques selados durante o processamento.</li>
+            <li><strong>Sistema isolado:</strong> não troca nem massa nem energia com a vizinhança. É uma idealização teórica útil em algumas análises termodinâmicas.</li>
           </ul>
         </div>
 
-        <h3 class="section-heading">📊 Regime Estacionário</h3>
+        <div class="theory-card">
+          <h4>Regimes de Operação</h4>
+          <p>O regime de operação determina a forma do balanço:</p>
+          <ul>
+            <li><strong>Regime estacionário (permanente):</strong> as propriedades do sistema não variam com o tempo. O acúmulo é zero (<span data-formula-inline="\frac{dm}{dt} = 0"></span>). A grande maioria dos problemas em engenharia química opera nesse regime.</li>
+            <li><strong>Regime transiente:</strong> as propriedades variam com o tempo. Ocorre em operações de partida, parada, batelada ou quando há perturbações no processo. O termo de acúmulo deve ser considerado.</li>
+          </ul>
+          <div class="info-callout">
+            <strong>Nota:</strong> Nos cálculos deste módulo, todos os balanços assumem regime estacionário, que é a situação mais frequente em projetos de processos contínuos.
+          </div>
+        </div>
+
+        <h3 class="section-heading">Regime Estacionário sem Reação</h3>
 
         <div class="theory-card">
-          <h4>Sem Reação Química</h4>
-          <p>Em regime permanente e sem reação, o acúmulo é zero e não há geração/consumo. O balanço se simplifica a:</p>
+          <h4>Balanço Global e por Componente</h4>
+          <p>Em regime permanente e sem reação química, o acúmulo é zero e os termos de geração e consumo são nulos. O balanço de massa se simplifica para:</p>
           <div class="theory-eq" data-formula="\sum \dot{m}_{in} = \sum \dot{m}_{out}"></div>
-          <p style="margin-top:0.5rem;">Para cada componente <em>i</em>:</p>
-          <div class="theory-eq" data-formula="\sum \dot{m}_{in,i} = \sum \dot{m}_{out,i}"></div>
+          <p style="margin-top:0.5rem;">Para cada componente <em>i</em> individualmente:</p>
+          <div class="theory-eq" data-formula="\sum \dot{m}_{in,i} = \sum \dot{m}_{out,i} \quad \Longleftrightarrow \quad \sum \dot{m}_{in} \cdot x_{i,in} = \sum \dot{m}_{out} \cdot x_{i,out}"></div>
+          <p style="margin-top: 0.75rem;">onde <span data-formula-inline="x_i"></span> é a fração mássica do componente <em>i</em> na corrente.</p>
           <div class="info-callout">
-            <strong>Dica:</strong> Em problemas de mistura, divisão ou separação sem reação, a fração mássica ou molar é útil: <span data-formula-inline="x_i = m_i / m_{total}"></span> e <span data-formula-inline="\sum x_i = 1"></span>.
+            <strong>Lembrete:</strong> A soma das frações mássicas (ou molares) em qualquer corrente deve ser igual a 1: <span data-formula-inline="\sum x_i = 1"></span>. Essa relação fornece uma equação adicional por corrente e é frequentemente utilizada para fechar o sistema.
           </div>
         </div>
 
         <div class="theory-card">
-          <h4>Com Reação Química</h4>
-          <p>Quando há reação, introduzimos a <strong>extensão da reação</strong> (ξ) e os coeficientes estequiométricos (ν):</p>
-          <div class="theory-eq" data-formula="\dot{n}_{out,i} = \dot{n}_{in,i} + \nu_i \cdot \dot{\xi}"></div>
-          <p style="margin-top: 0.5rem;">Onde:</p>
+          <h4>Equipamentos Típicos sem Reação</h4>
+          <p>Diversos equipamentos operam sob balanço de massa sem reação. É importante identificar o tipo de operação para definir corretamente as incógnitas:</p>
           <ul>
-            <li><span data-formula-inline="\dot{n}_{i}"></span> — vazão molar da espécie <em>i</em> (mol/s)</li>
-            <li><span data-formula-inline="\nu_i"></span> — coeficiente estequiométrico (negativo para reagentes, positivo para produtos)</li>
-            <li><span data-formula-inline="\dot{\xi}"></span> — taxa de extensão da reação (mol/s)</li>
+            <li><strong>Misturador:</strong> duas ou mais correntes de entrada combinadas em uma única saída. O balanço determina a composição ou vazão resultante.</li>
+            <li><strong>Divisor (splitter):</strong> uma corrente de entrada dividida em duas ou mais saídas, todas com a mesma composição da alimentação. Apenas as vazões variam.</li>
+            <li><strong>Separador:</strong> uma corrente de entrada separada em saídas com composições diferentes (ex.: destilação, filtração, evaporação). Os balanços por componente são essenciais.</li>
+            <li><strong>Extrator:</strong> transferência seletiva de um soluto entre duas fases imiscíveis, sem reação.</li>
+            <li><strong>Secador:</strong> remoção de umidade de um sólido pela passagem de ar quente. O balanço envolve três espécies: sólido seco, água e ar seco.</li>
           </ul>
         </div>
 
-        <h3 class="section-heading">📈 Conceitos Importantes</h3>
+        <h3 class="section-heading">Regime Estacionário com Reação</h3>
+
+        <div class="theory-card">
+          <h4>Extensão de Reação e Coeficientes Estequiométricos</h4>
+          <p>Quando há reação química, o balanço de massa por espécie incorpora a extensão da reação (<span data-formula-inline="\xi"></span>) e os coeficientes estequiométricos (<span data-formula-inline="\nu_i"></span>):</p>
+          <div class="theory-eq" data-formula="\dot{n}_{i,out} = \dot{n}_{i,in} + \nu_i \cdot \dot{\xi}"></div>
+          <p style="margin-top: 0.5rem;">Convenção de sinais para os coeficientes estequiométricos:</p>
+          <ul>
+            <li><span data-formula-inline="\nu_i < 0"></span> para reagentes (são consumidos)</li>
+            <li><span data-formula-inline="\nu_i > 0"></span> para produtos (são gerados)</li>
+            <li><span data-formula-inline="\nu_i = 0"></span> para espécies inertes (não participam da reação)</li>
+          </ul>
+          <p style="margin-top: 0.75rem;">A extensão da reação (<span data-formula-inline="\xi"></span>) é a mesma para todas as espécies em uma dada reação, o que permite relacionar as variações de todas as espécies por meio da estequiometria. Para uma reação <span data-formula-inline="aA + bB \rightarrow cC + dD"></span>:</p>
+          <div class="theory-eq" data-formula="\frac{\Delta n_A}{-a} = \frac{\Delta n_B}{-b} = \frac{\Delta n_C}{c} = \frac{\Delta n_D}{d} = \xi"></div>
+        </div>
+
+        <div class="theory-card">
+          <h4>Balanço Molar vs. Balanço Mássico com Reação</h4>
+          <p>É importante distinguir entre balanço molar e mássico quando há reação:</p>
+          <ul>
+            <li><strong>Balanço molar por espécie:</strong> não se conserva, pois mols são gerados ou consumidos pela reação. Requer o termo de geração/consumo (<span data-formula-inline="\nu_i \cdot \xi"></span>).</li>
+            <li><strong>Balanço mássico total:</strong> a massa total <em>sempre</em> se conserva, mesmo com reação. Portanto, <span data-formula-inline="\sum \dot{m}_{in} = \sum \dot{m}_{out}"></span> vale mesmo quando há reação.</li>
+            <li><strong>Balanço atômico:</strong> os átomos são conservados em qualquer reação química. Isso fornece uma abordagem alternativa que não requer conhecimento da extensão da reação (veja seção sobre balanço atômico abaixo).</li>
+          </ul>
+        </div>
+
+        <h3 class="section-heading">Base de Cálculo</h3>
+
+        <div class="theory-card">
+          <h4>Escolha da Base de Cálculo</h4>
+          <p>A base de cálculo é uma quantidade de referência adotada como ponto de partida para resolver o balanço. A escolha correta simplifica significativamente os cálculos. Algumas diretrizes:</p>
+          <ul>
+            <li>Se uma vazão é dada no enunciado, use essa vazão como base.</li>
+            <li>Se apenas composições são fornecidas (sem vazão absoluta), adote uma base conveniente, como 100 kg ou 100 mol de uma corrente específica.</li>
+            <li>Em problemas com reação, a base molar é geralmente mais prática, pois os coeficientes estequiométricos se aplicam diretamente.</li>
+            <li>Em problemas de mistura e separação sem reação, a base mássica costuma ser mais direta.</li>
+          </ul>
+          <div class="info-callout">
+            <strong>Exemplo:</strong> Se um problema informa que a alimentação contém 40% de etanol e 60% de água (em massa), sem especificar vazão, adote uma base de 100 kg/h de alimentação. Isso resulta em 40 kg/h de etanol e 60 kg/h de água, facilitando os cálculos.
+          </div>
+        </div>
+
+        <h3 class="section-heading">Conceitos Importantes</h3>
 
         <div class="theory-card">
           <h4>Conversão (X)</h4>
-          <p>Fração do reagente limitante que foi consumida:</p>
-          <div class="theory-eq" data-formula="X_A = \frac{\dot{n}_{A,in} - \dot{n}_{A,out}}{\dot{n}_{A,in}}"></div>
+          <p>A conversão indica a fração do reagente limitante que foi efetivamente consumida na reação. É uma das variáveis mais importantes no projeto de reatores e no balanço de massa com reação:</p>
+          <div class="theory-eq" data-formula="X_A = \frac{\dot{n}_{A,in} - \dot{n}_{A,out}}{\dot{n}_{A,in}} = \frac{\text{mols consumidos de A}}{\text{mols alimentados de A}}"></div>
+          <p style="margin-top: 0.5rem;">A conversão varia de 0 (nenhuma reação) a 1 (reagente totalmente consumido). Em processos com reciclo, distinguimos entre:</p>
+          <ul>
+            <li><strong>Conversão por passe:</strong> fração convertida em uma única passagem pelo reator.</li>
+            <li><strong>Conversão global:</strong> fração convertida considerando o sistema como um todo (alimentação fresca vs. saída final do processo). A conversão global é sempre maior ou igual à conversão por passe.</li>
+          </ul>
+        </div>
+
+        <div class="theory-card">
+          <h4>Reagente Limitante e Reagente em Excesso</h4>
+          <p>Em reações com mais de um reagente, o <strong>reagente limitante</strong> é aquele que seria completamente consumido primeiro se a reação prosseguisse até o fim. Ele determina a quantidade máxima de produto que pode ser formada.</p>
+          <p style="margin-top: 0.5rem;">Para identificar o reagente limitante, divida a vazão molar de cada reagente pelo módulo do seu coeficiente estequiométrico. O reagente com o menor valor é o limitante:</p>
+          <div class="theory-eq" data-formula="\text{Reagente limitante: menor } \frac{\dot{n}_i}{|\nu_i|}"></div>
+          <p style="margin-top: 0.75rem;">O <strong>excesso percentual</strong> de um reagente em relação à quantidade estequiométrica necessária é:</p>
+          <div class="theory-eq" data-formula="\%\text{excesso} = \frac{n_{\text{alimentado}} - n_{\text{estequiom\'{e}trico}}}{n_{\text{estequiom\'{e}trico}}} \times 100\%"></div>
+          <div class="info-callout">
+            <strong>Na prática:</strong> É comum alimentar reagentes em excesso para garantir maior conversão do reagente mais caro ou para controlar a seletividade da reação. A combustão de combustíveis, por exemplo, opera tipicamente com 10% a 20% de excesso de ar.
+          </div>
         </div>
 
         <div class="theory-card">
           <h4>Seletividade (S)</h4>
-          <p>Razão entre mols do produto desejado e mols do produto indesejado:</p>
+          <p>Quando mais de um produto é formado (reações paralelas ou em série), a seletividade quantifica a preferência pela formação do produto desejado em relação ao indesejado:</p>
           <div class="theory-eq" data-formula="S_{D/U} = \frac{\dot{n}_D}{\dot{n}_U}"></div>
+          <p style="margin-top: 0.5rem;">onde <span data-formula-inline="\dot{n}_D"></span> é a vazão molar do produto desejado e <span data-formula-inline="\dot{n}_U"></span> é a do produto indesejado. A seletividade pode ser melhorada ajustando temperatura, pressão, tempo de residência e catalisador.</p>
         </div>
 
         <div class="theory-card">
           <h4>Rendimento (Y)</h4>
-          <p>Razão entre o produto desejado formado e o reagente limitante consumido:</p>
-          <div class="theory-eq" data-formula="Y_D = \frac{\dot{n}_D}{\dot{n}_{A,in} - \dot{n}_{A,out}}"></div>
+          <p>O rendimento relaciona a quantidade de produto desejado efetivamente formado à quantidade máxima teórica (baseada no reagente limitante consumido):</p>
+          <div class="theory-eq" data-formula="Y_D = \frac{\dot{n}_D}{\dot{n}_{A,in} - \dot{n}_{A,out}} = \frac{\text{mols de D formados}}{\text{mols de A consumidos}}"></div>
+          <p style="margin-top: 0.5rem;">A relação entre rendimento, conversão e seletividade é:</p>
+          <div class="theory-eq" data-formula="Y = X_A \cdot S_{D/U} \cdot \frac{|\nu_A|}{\nu_D}"></div>
+          <p style="margin-top: 0.5rem;">Maximizar o rendimento é um dos objetivos centrais no projeto de reatores industriais.</p>
         </div>
+
+        <h3 class="section-heading">Componente de Amarração (Tie Component)</h3>
 
         <div class="theory-card">
-          <h4>Excesso de Reagente</h4>
-          <p>Percentual acima da quantidade estequiométrica necessária:</p>
-          <div class="theory-eq" data-formula="\%\text{excesso} = \frac{n_{\text{alimentado}} - n_{\text{esteq}}}{n_{\text{esteq}}} \times 100\%"></div>
+          <h4>O que é um Componente de Amarração</h4>
+          <p>Um componente de amarração é uma espécie que aparece em apenas uma corrente de entrada e em apenas uma corrente de saída. Essa propriedade permite calcular diretamente a relação entre as duas correntes, "amarrando" seus valores.</p>
+          <p style="margin-top: 0.75rem;">Se o componente <em>C</em> aparece apenas na corrente de entrada 1 (com fração <span data-formula-inline="x_{C,1}"></span>) e na corrente de saída 2 (com fração <span data-formula-inline="x_{C,2}"></span>), então:</p>
+          <div class="theory-eq" data-formula="\dot{m}_1 \cdot x_{C,1} = \dot{m}_2 \cdot x_{C,2} \quad \Longrightarrow \quad \frac{\dot{m}_1}{\dot{m}_2} = \frac{x_{C,2}}{x_{C,1}}"></div>
+          <div class="info-callout">
+            <strong>Estratégia:</strong> Sempre identifique componentes de amarração antes de iniciar os cálculos. Eles são particularmente úteis em problemas de secagem (sólido seco), evaporação (soluto) e destilação (componente pesado no fundo ou leve no topo).
+          </div>
         </div>
 
-        <h3 class="section-heading">♻️ Sistemas com Reciclo</h3>
+        <h3 class="section-heading">Balanço Atômico</h3>
+
+        <div class="theory-card">
+          <h4>Abordagem por Balanço de Átomos</h4>
+          <p>Uma alternativa ao balanço molecular com extensão de reação é o balanço atômico. Como os átomos são conservados em qualquer reação química, podemos escrever um balanço para cada elemento (C, H, O, N, etc.) sem precisar conhecer a estequiometria da reação ou a extensão:</p>
+          <div class="theory-eq" data-formula="\sum (\text{mols de \'{a}tomos de } j \text{ entrando}) = \sum (\text{mols de \'{a}tomos de } j \text{ saindo})"></div>
+          <p style="margin-top: 0.75rem;">Essa abordagem é especialmente útil quando:</p>
+          <ul>
+            <li>A estequiometria da reação é desconhecida ou complexa.</li>
+            <li>Há múltiplas reações simultâneas.</li>
+            <li>O problema envolve combustão (balanço de C, H e O é muito prático).</li>
+          </ul>
+          <div class="info-callout">
+            <strong>Exemplo de combustão:</strong> Na queima completa do metano, <span data-formula-inline="\text{CH}_4 + 2\text{O}_2 \rightarrow \text{CO}_2 + 2\text{H}_2\text{O}"></span>, o balanço atômico de carbono indica que todo C alimentado como CH₄ sai como CO₂. O balanço de hidrogênio indica que todo H alimentado como CH₄ sai como H₂O.
+          </div>
+        </div>
+
+        <h3 class="section-heading">Correntes de Bypass</h3>
+
+        <div class="theory-card">
+          <h4>Sistemas com Bypass</h4>
+          <p>Uma corrente de bypass (ou desvio) é aquela que contorna uma unidade de processamento e se junta à corrente de saída, sem sofrer a transformação da unidade. É comumente usada para ajustar a composição ou temperatura do produto final.</p>
+          <p style="margin-top: 0.75rem;">Em um sistema com bypass, a alimentação se divide em duas frações: uma que passa pelo processo e outra que o contorna. No ponto de mistura final:</p>
+          <div class="theory-eq" data-formula="\dot{m}_{\text{sa\'{i}da}} = \dot{m}_{\text{processado}} + \dot{m}_{\text{bypass}}"></div>
+          <p style="margin-top: 0.5rem;">O balanço por componente no ponto de mistura é:</p>
+          <div class="theory-eq" data-formula="\dot{m}_{\text{sa\'{i}da}} \cdot x_{i,s} = \dot{m}_{\text{proc}} \cdot x_{i,p} + \dot{m}_{\text{bypass}} \cdot x_{i,b}"></div>
+          <div class="info-callout">
+            <strong>Dica:</strong> A composição da corrente de bypass é idêntica à da alimentação (antes da divisão). Use essa informação como uma relação adicional no sistema de equações.
+          </div>
+        </div>
+
+        <h3 class="section-heading">Sistemas com Reciclo</h3>
 
         <div class="theory-card">
           <h4>Corrente de Reciclo</h4>
-          <p>Uma corrente de reciclo retorna material não convertido de volta ao reator ou processo. Isso aumenta a conversão global em relação à conversão por passe.</p>
-          <div class="theory-eq" data-formula="X_{\text{global}} = \frac{F_{0,A} - F_{P,A}}{F_{0,A}}"></div>
-          <p style="margin-top: 0.5rem;">Onde <span data-formula-inline="F_{0,A}"></span> é a alimentação fresca e <span data-formula-inline="F_{P,A}"></span> é a saída no produto.</p>
+          <p>Uma corrente de reciclo retorna material não convertido (ou não separado) de volta ao início do processo, onde se mistura com a alimentação fresca. O objetivo principal é aumentar a conversão global do reagente e melhorar a eficiência econômica do processo.</p>
+          <p style="margin-top: 0.75rem;">A conversão global é definida em relação à alimentação fresca:</p>
+          <div class="theory-eq" data-formula="X_{\text{global}} = \frac{F_{0,A} - F_{\text{sa\'{i}da},A}}{F_{0,A}}"></div>
+          <p style="margin-top: 0.5rem;">Onde <span data-formula-inline="F_{0,A}"></span> é a vazão molar de A na alimentação fresca e <span data-formula-inline="F_{\text{saída},A}"></span> é a vazão de A na saída final (produto + purga).</p>
+          <p style="margin-top: 0.75rem;">A razão de reciclo é definida como:</p>
+          <div class="theory-eq" data-formula="\text{Raz\~{a}o de reciclo} = \frac{\dot{m}_{\text{reciclo}}}{\dot{m}_{\text{alim. fresca}}}"></div>
           <div class="info-callout">
-            <strong>Estratégia:</strong> Em problemas com reciclo, defina balanços em torno de: (1) o sistema global, (2) o ponto de mistura, (3) o reator, (4) o separador. Comece pelo balanço global quando possível — ele elimina a corrente de reciclo.
+            <strong>Estratégia de resolução:</strong> Em problemas com reciclo, defina volumes de controle em torno de: (1) o sistema global (elimina a corrente de reciclo da equação), (2) o ponto de mistura, (3) o reator, (4) o separador. Comece pelo balanço global quando possível, pois ele envolve apenas alimentação fresca e saídas finais.
           </div>
         </div>
 
         <div class="theory-card">
           <h4>Purga</h4>
-          <p>Corrente retirada do loop de reciclo para evitar acúmulo de inertes. O balanço no ponto de purga é:</p>
-          <div class="theory-eq" data-formula="\dot{m}_{\text{reciclo}} = \dot{m}_{\text{retorno}} + \dot{m}_{\text{purga}}"></div>
+          <p>Em processos com reciclo, espécies inertes (que não reagem) tendem a se acumular no loop. A corrente de purga é retirada para evitar esse acúmulo e manter o regime estacionário. No ponto de divisão entre reciclo e purga:</p>
+          <div class="theory-eq" data-formula="\dot{m}_{\text{total}} = \dot{m}_{\text{reciclo}} + \dot{m}_{\text{purga}}"></div>
+          <p style="margin-top: 0.75rem;">A composição da purga é idêntica à da corrente de reciclo (pois ambas saem do mesmo ponto de divisão). Em regime permanente, a quantidade de inerte que entra pela alimentação fresca deve ser igual à que sai pela purga:</p>
+          <div class="theory-eq" data-formula="F_{0} \cdot x_{\text{inerte},0} = \dot{m}_{\text{purga}} \cdot x_{\text{inerte, purga}}"></div>
+          <div class="info-callout">
+            <strong>Regra prática:</strong> Quanto maior a vazão de purga, menor o acúmulo de inertes, mas maior a perda de reagente não convertido. O dimensionamento da purga é um compromisso econômico entre perda de reagente e custo de reprocessamento.
+          </div>
         </div>
 
-        <h3 class="section-heading">🧪 Análise de Graus de Liberdade</h3>
+        <h3 class="section-heading">Reações Múltiplas</h3>
 
         <div class="theory-card">
-          <h4>Graus de Liberdade (GL)</h4>
-          <p>Antes de resolver um problema, verifique o número de graus de liberdade:</p>
-          <div class="theory-eq" data-formula="\text{GL} = n_{\text{incógnitas}} - n_{\text{equações independentes}}"></div>
+          <h4>Reações em Paralelo e em Série</h4>
+          <p>Quando dois ou mais conjuntos de produtos podem ser formados a partir dos mesmos reagentes, temos reações múltiplas. Elas se classificam em:</p>
           <ul>
-            <li><strong>GL = 0:</strong> sistema determinado — solução única</li>
-            <li><strong>GL &gt; 0:</strong> sistema subdeterminado — faltam informações</li>
-            <li><strong>GL &lt; 0:</strong> sistema sobredeterminado — verificar consistência</li>
+            <li><strong>Reações em paralelo (competitivas):</strong> o reagente é consumido por caminhos diferentes simultaneamente. Exemplo: <span data-formula-inline="A \rightarrow D"></span> (desejada) e <span data-formula-inline="A \rightarrow U"></span> (indesejada). O balanço precisa considerar uma extensão de reação para cada reação.</li>
+            <li><strong>Reações em série (consecutivas):</strong> o produto de uma reação é o reagente da seguinte. Exemplo: <span data-formula-inline="A \rightarrow D \rightarrow U"></span>. O rendimento do produto intermediário D passa por um máximo à medida que a conversão aumenta.</li>
+            <li><strong>Reações mistas:</strong> combinação de paralelas e em série. É o caso mais geral e mais complexo.</li>
+          </ul>
+          <p style="margin-top: 0.75rem;">Para <em>R</em> reações independentes, o balanço molar de cada espécie é:</p>
+          <div class="theory-eq" data-formula="\dot{n}_{i,out} = \dot{n}_{i,in} + \sum_{j=1}^{R} \nu_{i,j} \cdot \dot{\xi}_j"></div>
+          <p style="margin-top: 0.5rem;">onde <span data-formula-inline="\nu_{i,j}"></span> é o coeficiente estequiométrico da espécie <em>i</em> na reação <em>j</em> e <span data-formula-inline="\dot{\xi}_j"></span> é a extensão da reação <em>j</em>.</p>
+        </div>
+
+        <h3 class="section-heading">Análise de Graus de Liberdade</h3>
+
+        <div class="theory-card">
+          <h4>Determinação dos Graus de Liberdade (GL)</h4>
+          <p>Antes de resolver qualquer problema de balanço, é essencial verificar se o sistema é determinado. A análise de graus de liberdade evita tentativas de resolver sistemas impossíveis ou redundantes:</p>
+          <div class="theory-eq" data-formula="\text{GL} = n_{\text{inc\'{o}gnitas}} - n_{\text{equa\c{c}\~{o}es independentes}}"></div>
+          <ul>
+            <li><strong>GL = 0:</strong> sistema determinado, possui solução única. Pode ser resolvido.</li>
+            <li><strong>GL &gt; 0:</strong> sistema subdeterminado, faltam informações ou equações. É necessário buscar dados adicionais.</li>
+            <li><strong>GL &lt; 0:</strong> sistema sobredeterminado. As equações podem ser inconsistentes. Verifique a consistência dos dados.</li>
+          </ul>
+          <p style="margin-top: 0.75rem;">Fontes de equações independentes:</p>
+          <ul>
+            <li>Balanços por componente (um para cada espécie química independente)</li>
+            <li>Relações de fração: <span data-formula-inline="\sum x_i = 1"></span> em cada corrente</li>
+            <li>Especificações de processo: razões de fluxo, conversões, recuperações, eficiências</li>
+            <li>Relações de equilíbrio (quando aplicável)</li>
+            <li>Restrições físicas: vazões não negativas, frações entre 0 e 1</li>
           </ul>
           <div class="info-callout">
-            <strong>Fontes de equações:</strong> balanços por componente, relações de fração (Σx = 1), especificações de processo (razões, conversões), relações de equilíbrio.
+            <strong>Procedimento:</strong> Conte o número de incógnitas (vazões, composições, extensões de reação desconhecidas), depois conte as equações independentes disponíveis. Se GL = 0, prossiga com a resolução.
+          </div>
+        </div>
+
+        <h3 class="section-heading">Metodologia de Resolução</h3>
+
+        <div class="theory-card">
+          <h4>Roteiro para Resolver Problemas de Balanço de Massa</h4>
+          <p>Siga este roteiro sistemático para resolver problemas de balanço material de forma organizada:</p>
+          <ul>
+            <li><strong>1. Desenhe o fluxograma:</strong> represente todas as unidades, correntes de entrada, saída, reciclo, bypass e purga. Numere cada corrente.</li>
+            <li><strong>2. Identifique as espécies:</strong> liste todas as espécies químicas presentes no processo.</li>
+            <li><strong>3. Escolha a base de cálculo:</strong> adote uma vazão conhecida ou uma base conveniente (100 kg, 100 mol).</li>
+            <li><strong>4. Escreva todas as informações conhecidas:</strong> associe os dados do enunciado a correntes e composições no diagrama.</li>
+            <li><strong>5. Faça a análise de graus de liberdade:</strong> verifique se o sistema é determinado. Se GL &gt; 0, busque mais informações ou considere subsistemas.</li>
+            <li><strong>6. Escreva as equações de balanço:</strong> balanço global e por componente para cada unidade ou para o sistema inteiro.</li>
+            <li><strong>7. Resolva o sistema:</strong> comece pelas equações mais simples (uma incógnita) e substitua progressivamente.</li>
+            <li><strong>8. Verifique os resultados:</strong> confirme que o balanço total fecha, que as frações somam 1 e que todos os valores fazem sentido físico (vazões positivas, frações entre 0 e 1).</li>
+          </ul>
+          <div class="info-callout">
+            <strong>Dica final:</strong> Ao lidar com sistemas complexos (múltiplas unidades, reciclo, bypass), tente identificar subsistemas que possam ser resolvidos independentemente. Comece pelo balanço global, depois resolva unidade a unidade.
           </div>
         </div>
 
@@ -624,10 +804,10 @@
       <!-- ================= SIMPLE (NO REACTION) TAB ================= -->
       <section class="mb-panel" id="panel-simple" role="tabpanel">
 
-        <h3 class="section-heading">🧮 Balanço de Massa — Sem Reação</h3>
+        <h3 class="section-heading">Balanço de Massa: Sem Reação</h3>
 
         <div class="calc-container">
-          <h4>Misturador / Separador — Componente Único</h4>
+          <h4>Misturador / Separador: Componente Único</h4>
           <p class="calc-desc">Calcule a vazão mássica desconhecida em um sistema simples de mistura ou separação em regime permanente.</p>
 
           <!-- Diagram -->
@@ -717,14 +897,14 @@
       <!-- ================= REACTION TAB ================= -->
       <section class="mb-panel" id="panel-reaction" role="tabpanel">
 
-        <h3 class="section-heading">⚗️ Balanço de Massa — Com Reação</h3>
+        <h3 class="section-heading">Balanço de Massa: Com Reação</h3>
 
         <div class="calc-container">
           <h4>Reator com Reação Simples</h4>
           <p class="calc-desc">Calcule vazões molares de saída dado um reagente com conversão conhecida. Insira a estequiometria e a alimentação.</p>
 
           <div class="reaction-config">
-            <h5>⚙️ Configuração da Reação</h5>
+            <h5>Configuração da Reação</h5>
             <div class="reaction-row">
               <div class="field">
                 <label>Estequiometria (ex: A → 2B + C)</label>
@@ -742,7 +922,7 @@
           </div>
 
           <div class="reaction-config">
-            <h5>📥 Alimentação adicional (opcional)</h5>
+            <h5>Alimentação adicional (opcional)</h5>
             <div class="reaction-row" id="rxnFeedExtra">
               <div class="field">
                 <label>Espécie</label>
@@ -786,7 +966,7 @@
       <!-- ================= MULTICOMPONENT TAB ================= -->
       <section class="mb-panel" id="panel-multicomponent" role="tabpanel">
 
-        <h3 class="section-heading">🔬 Balanço Multicomponente — Sem Reação</h3>
+        <h3 class="section-heading">Balanço Multicomponente: Sem Reação</h3>
 
         <div class="calc-container">
           <h4>Misturador / Separador Multicomponente</h4>
@@ -798,7 +978,7 @@
 
           <!-- Components definition -->
           <div class="reaction-config">
-            <h5>🧪 Componentes do Sistema</h5>
+            <h5>Componentes do Sistema</h5>
             <div id="multiComponents">
               <div class="stream-entry" style="padding: 0.5rem 0.75rem;">
                 <div class="stream-fields">
@@ -847,7 +1027,7 @@
       <!-- ================= RECYCLE TAB ================= -->
       <section class="mb-panel" id="panel-recycle" role="tabpanel">
 
-        <h3 class="section-heading">♻️ Balanço com Reciclo</h3>
+        <h3 class="section-heading">Balanço com Reciclo</h3>
 
         <div class="calc-container">
           <h4>Sistema Reator–Separador com Reciclo</h4>
@@ -893,7 +1073,7 @@
           </div>
 
           <div class="reaction-config">
-            <h5>⚙️ Parâmetros do Sistema</h5>
+            <h5>Parâmetros do Sistema</h5>
             <div class="reaction-row">
               <div class="field">
                 <label>Alimentação Fresca F₀ (mol/s)</label>
@@ -911,7 +1091,7 @@
           </div>
 
           <div class="reaction-config">
-            <h5>🔀 Separador</h5>
+            <h5>Separador</h5>
             <div class="reaction-row">
               <div class="field">
                 <label>Recuperação de produto (%)</label>
