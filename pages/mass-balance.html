@@ -3,20 +3,466 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Balanço de Massa — Calculadoras para sistemas com e sem reação química — Q-Engineering Hub" />
   <title>Balanço de Massa — Q-Engineering Hub</title>
   <link rel="stylesheet" href="../css/style.css" />
+  <!-- KaTeX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous" />
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+  <style>
+    /* ---- Mass Balance Page Styles ---- */
+
+    /* Tab navigation */
+    .mb-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+    .mb-tab {
+      padding: 0.5rem 1.15rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--transition);
+      font-family: inherit;
+    }
+    .mb-tab:hover {
+      border-color: var(--accent);
+      color: var(--text-primary);
+    }
+    .mb-tab.active {
+      background: var(--accent-dark);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    /* Tab panels */
+    .mb-panel {
+      display: none;
+    }
+    .mb-panel.active {
+      display: block;
+    }
+
+    /* Theory cards */
+    .theory-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 1.25rem;
+      transition: border-color var(--transition);
+    }
+    .theory-card:hover {
+      border-color: rgba(88, 166, 255, 0.3);
+    }
+    .theory-card h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .theory-card p, .theory-card li {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+    .theory-card ul {
+      padding-left: 1.25rem;
+      margin-top: 0.5rem;
+    }
+    .theory-card ul li {
+      margin-bottom: 0.35rem;
+    }
+    .theory-eq {
+      background: rgba(88, 166, 255, 0.04);
+      border: 1px solid rgba(88, 166, 255, 0.12);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin: 0.85rem 0;
+      text-align: center;
+      overflow-x: auto;
+    }
+    .theory-eq .katex {
+      font-size: 1.25em;
+      color: var(--accent);
+    }
+
+    /* Section headings */
+    .section-heading {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 2rem 0 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .section-heading:first-child {
+      margin-top: 0;
+    }
+
+    /* Calculator containers */
+    .calc-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .calc-container h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+    .calc-container .calc-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+    }
+
+    /* Streams section */
+    .streams-area {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+    .stream-column h5 {
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .stream-column h5 .stream-badge {
+      font-size: 0.7rem;
+      background: var(--accent-dark);
+      color: #fff;
+      border-radius: 999px;
+      padding: 0.15rem 0.5rem;
+      font-weight: 500;
+    }
+
+    .stream-entry {
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 1rem;
+      margin-bottom: 0.5rem;
+      position: relative;
+    }
+    .stream-entry .stream-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+    .stream-entry .stream-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .stream-entry .remove-stream {
+      background: none;
+      border: none;
+      color: var(--danger);
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 0.15rem 0.35rem;
+      border-radius: var(--radius-sm);
+      transition: background var(--transition);
+    }
+    .stream-entry .remove-stream:hover {
+      background: rgba(248, 81, 73, 0.15);
+    }
+
+    .stream-fields {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .stream-fields .field {
+      flex: 1;
+      min-width: 100px;
+    }
+    .stream-fields .field label {
+      display: block;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-bottom: 0.2rem;
+    }
+    .stream-fields .field input {
+      width: 100%;
+      padding: 0.4rem 0.6rem;
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      font-size: 0.85rem;
+      outline: none;
+      transition: border-color var(--transition);
+    }
+    .stream-fields .field input:focus {
+      border-color: var(--accent);
+    }
+
+    .add-stream-btn {
+      background: transparent;
+      border: 1px dashed var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-muted);
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-family: inherit;
+      width: 100%;
+      transition: all var(--transition);
+    }
+    .add-stream-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(88, 166, 255, 0.04);
+    }
+
+    /* Solve / action buttons */
+    .action-row {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin: 1.25rem 0;
+    }
+    .btn-primary {
+      padding: 0.6rem 1.5rem;
+      background: var(--accent-dark);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background var(--transition), box-shadow var(--transition);
+    }
+    .btn-primary:hover {
+      background: var(--accent);
+      box-shadow: 0 2px 12px rgba(88, 166, 255, 0.25);
+    }
+    .btn-secondary {
+      padding: 0.6rem 1.5rem;
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      color: var(--text-primary);
+    }
+
+    /* Results table */
+    .mb-results {
+      margin-top: 1rem;
+    }
+    .mb-results table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+    .mb-results th, .mb-results td {
+      padding: 0.6rem 0.85rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .mb-results th {
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      letter-spacing: 0.05em;
+      background: var(--bg-secondary);
+    }
+    .mb-results td {
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+    }
+    .mb-results .highlight {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* Reaction input fields */
+    .reaction-config {
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+    .reaction-config h5 {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 0.75rem;
+    }
+    .reaction-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 0.75rem;
+    }
+    .reaction-row .field label {
+      display: block;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-bottom: 0.2rem;
+    }
+    .reaction-row .field input,
+    .reaction-row .field select {
+      width: 100%;
+      padding: 0.4rem 0.6rem;
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      font-size: 0.85rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color var(--transition);
+    }
+    .reaction-row .field input:focus,
+    .reaction-row .field select:focus {
+      border-color: var(--accent);
+    }
+
+    /* Info callout */
+    .info-callout {
+      background: rgba(88, 166, 255, 0.06);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 0.85rem 1.15rem;
+      margin: 1rem 0;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    .info-callout strong {
+      color: var(--text-primary);
+    }
+
+    /* Component rows for multicomponent */
+    .component-row {
+      display: grid;
+      grid-template-columns: 2fr repeat(2, 1fr) auto;
+      gap: 0.5rem;
+      align-items: end;
+      margin-bottom: 0.5rem;
+    }
+    .component-row .field label {
+      display: block;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-bottom: 0.2rem;
+    }
+    .component-row .field input {
+      width: 100%;
+      padding: 0.4rem 0.6rem;
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      font-size: 0.85rem;
+      outline: none;
+      transition: border-color var(--transition);
+    }
+    .component-row .field input:focus {
+      border-color: var(--accent);
+    }
+    .component-row .remove-btn {
+      background: none;
+      border: none;
+      color: var(--danger);
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 0.35rem;
+      border-radius: var(--radius-sm);
+      transition: background var(--transition);
+      align-self: end;
+      margin-bottom: 0.15rem;
+    }
+    .component-row .remove-btn:hover {
+      background: rgba(248, 81, 73, 0.15);
+    }
+
+    /* Diagram visualization */
+    .diagram-box {
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      margin: 1rem 0;
+      text-align: center;
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .diagram-box svg {
+      max-width: 100%;
+    }
+
+    /* Mobile overrides */
+    @media (max-width: 768px) {
+      .streams-area {
+        grid-template-columns: 1fr;
+      }
+      .reaction-row {
+        grid-template-columns: 1fr;
+      }
+      .component-row {
+        grid-template-columns: 1fr;
+      }
+      .component-row .remove-btn {
+        justify-self: end;
+      }
+    }
+  </style>
 </head>
 <body>
+
+  <!-- ========== Header ========== -->
   <header class="site-header">
     <div class="container header-inner">
-      <a href="../index.html" class="logo">
+      <a href="../index.html" class="logo" aria-label="Q-Engineering Hub — Página inicial">
         <span class="logo-icon">⚗️</span>
         <div class="logo-text">
           <h1>Q-Engineering Hub</h1>
           <span>Engenharia Química</span>
         </div>
       </a>
-      <button class="menu-toggle" id="menuToggle">☰</button>
+
+      <button class="menu-toggle" aria-label="Abrir menu" id="menuToggle">☰</button>
+
       <nav class="header-nav" id="headerNav">
         <a href="../index.html">Início</a>
         <a href="properties.html">Propriedades</a>
@@ -25,10 +471,14 @@
       </nav>
     </div>
   </header>
+
+  <!-- ========== Page Wrapper ========== -->
   <div class="page-wrapper">
+
+    <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
       <p class="sidebar-title">Módulos</p>
-      <nav class="sidebar-nav">
+      <nav class="sidebar-nav" aria-label="Navegação de módulos">
         <a href="unit-converter.html"><span class="nav-icon">🔄</span> Conversor de Unidades</a>
         <a href="mass-balance.html" class="active"><span class="nav-icon">⚖️</span> Balanço de Massa</a>
         <a href="energy-balance.html" class="disabled"><span class="nav-icon">🔥</span> Balanço de Energia</a>
@@ -43,21 +493,484 @@
         <a href="calculus.html"><span class="nav-icon">∫</span> Cálculo</a>
       </nav>
     </aside>
+
+    <!-- Main Content -->
     <main class="main-content">
+      <button class="menu-toggle" id="sidebarToggle" aria-label="Abrir sidebar">☰</button>
+
       <h2 class="page-title">⚖️ Balanço de Massa</h2>
-      <p class="page-subtitle">Este módulo está em desenvolvimento e será disponibilizado em breve.</p>
-      <div class="result-box" style="text-align:center; padding: 3rem 1.5rem;">
-        <p style="font-size: 3rem; margin-bottom: 1rem;">🚧</p>
-        <p style="font-size: 1.1rem; color: var(--text-secondary);">Em breve — estamos trabalhando neste módulo!</p>
-        <p style="margin-top: 1rem;"><a href="../index.html">← Voltar ao início</a></p>
+      <p class="page-subtitle">Calculadoras e referência teórica para balanços materiais em processos químicos — com e sem reação.</p>
+
+      <!-- Tab Navigation -->
+      <div class="mb-tabs" role="tablist" aria-label="Seções do Balanço de Massa">
+        <button class="mb-tab active" data-tab="theory" role="tab" aria-selected="true">📖 Teoria</button>
+        <button class="mb-tab" data-tab="simple" role="tab" aria-selected="false">🧮 Sem Reação</button>
+        <button class="mb-tab" data-tab="reaction" role="tab" aria-selected="false">⚗️ Com Reação</button>
+        <button class="mb-tab" data-tab="multicomponent" role="tab" aria-selected="false">🔬 Multicomponente</button>
+        <button class="mb-tab" data-tab="recycle" role="tab" aria-selected="false">♻️ Reciclo</button>
       </div>
+
+      <!-- ===================== THEORY TAB ===================== -->
+      <section class="mb-panel active" id="panel-theory" role="tabpanel">
+
+        <h3 class="section-heading">📐 Fundamentos do Balanço de Massa</h3>
+
+        <div class="theory-card">
+          <h4>Princípio da Conservação da Massa</h4>
+          <p>A massa não pode ser criada nem destruída (em processos não nucleares). Para qualquer sistema, a taxa de acúmulo de massa é igual à diferença entre o que entra e o que sai, mais o que é gerado e menos o que é consumido.</p>
+          <div class="theory-eq" data-formula="\text{Acúmulo} = \text{Entrada} - \text{Saída} + \text{Geração} - \text{Consumo}"></div>
+        </div>
+
+        <div class="theory-card">
+          <h4>Equação Geral (Forma Diferencial)</h4>
+          <p>Para um volume de controle, o balanço de massa geral em regime transiente é:</p>
+          <div class="theory-eq" data-formula="\frac{dm_{sis}}{dt} = \sum \dot{m}_{in} - \sum \dot{m}_{out} + \sum r_i \cdot V"></div>
+          <p style="margin-top: 0.5rem;">Onde:</p>
+          <ul>
+            <li><span data-formula-inline="m_{sis}"></span> — massa total no sistema (kg)</li>
+            <li><span data-formula-inline="\dot{m}_{in}, \dot{m}_{out}"></span> — vazões mássicas de entrada e saída (kg/s)</li>
+            <li><span data-formula-inline="r_i"></span> — taxa de reação da espécie <em>i</em> (kg/m³·s)</li>
+            <li><span data-formula-inline="V"></span> — volume do sistema (m³)</li>
+          </ul>
+        </div>
+
+        <h3 class="section-heading">📊 Regime Estacionário</h3>
+
+        <div class="theory-card">
+          <h4>Sem Reação Química</h4>
+          <p>Em regime permanente e sem reação, o acúmulo é zero e não há geração/consumo. O balanço se simplifica a:</p>
+          <div class="theory-eq" data-formula="\sum \dot{m}_{in} = \sum \dot{m}_{out}"></div>
+          <p style="margin-top:0.5rem;">Para cada componente <em>i</em>:</p>
+          <div class="theory-eq" data-formula="\sum \dot{m}_{in,i} = \sum \dot{m}_{out,i}"></div>
+          <div class="info-callout">
+            <strong>Dica:</strong> Em problemas de mistura, divisão ou separação sem reação, a fração mássica ou molar é útil: <span data-formula-inline="x_i = m_i / m_{total}"></span> e <span data-formula-inline="\sum x_i = 1"></span>.
+          </div>
+        </div>
+
+        <div class="theory-card">
+          <h4>Com Reação Química</h4>
+          <p>Quando há reação, introduzimos a <strong>extensão da reação</strong> (ξ) e os coeficientes estequiométricos (ν):</p>
+          <div class="theory-eq" data-formula="\dot{n}_{out,i} = \dot{n}_{in,i} + \nu_i \cdot \dot{\xi}"></div>
+          <p style="margin-top: 0.5rem;">Onde:</p>
+          <ul>
+            <li><span data-formula-inline="\dot{n}_{i}"></span> — vazão molar da espécie <em>i</em> (mol/s)</li>
+            <li><span data-formula-inline="\nu_i"></span> — coeficiente estequiométrico (negativo para reagentes, positivo para produtos)</li>
+            <li><span data-formula-inline="\dot{\xi}"></span> — taxa de extensão da reação (mol/s)</li>
+          </ul>
+        </div>
+
+        <h3 class="section-heading">📈 Conceitos Importantes</h3>
+
+        <div class="theory-card">
+          <h4>Conversão (X)</h4>
+          <p>Fração do reagente limitante que foi consumida:</p>
+          <div class="theory-eq" data-formula="X_A = \frac{\dot{n}_{A,in} - \dot{n}_{A,out}}{\dot{n}_{A,in}}"></div>
+        </div>
+
+        <div class="theory-card">
+          <h4>Seletividade (S)</h4>
+          <p>Razão entre mols do produto desejado e mols do produto indesejado:</p>
+          <div class="theory-eq" data-formula="S_{D/U} = \frac{\dot{n}_D}{\dot{n}_U}"></div>
+        </div>
+
+        <div class="theory-card">
+          <h4>Rendimento (Y)</h4>
+          <p>Razão entre o produto desejado formado e o reagente limitante consumido:</p>
+          <div class="theory-eq" data-formula="Y_D = \frac{\dot{n}_D}{\dot{n}_{A,in} - \dot{n}_{A,out}}"></div>
+        </div>
+
+        <div class="theory-card">
+          <h4>Excesso de Reagente</h4>
+          <p>Percentual acima da quantidade estequiométrica necessária:</p>
+          <div class="theory-eq" data-formula="\%\text{excesso} = \frac{n_{\text{alimentado}} - n_{\text{esteq}}}{n_{\text{esteq}}} \times 100\%"></div>
+        </div>
+
+        <h3 class="section-heading">♻️ Sistemas com Reciclo</h3>
+
+        <div class="theory-card">
+          <h4>Corrente de Reciclo</h4>
+          <p>Uma corrente de reciclo retorna material não convertido de volta ao reator ou processo. Isso aumenta a conversão global em relação à conversão por passe.</p>
+          <div class="theory-eq" data-formula="X_{\text{global}} = \frac{F_{0,A} - F_{P,A}}{F_{0,A}}"></div>
+          <p style="margin-top: 0.5rem;">Onde <span data-formula-inline="F_{0,A}"></span> é a alimentação fresca e <span data-formula-inline="F_{P,A}"></span> é a saída no produto.</p>
+          <div class="info-callout">
+            <strong>Estratégia:</strong> Em problemas com reciclo, defina balanços em torno de: (1) o sistema global, (2) o ponto de mistura, (3) o reator, (4) o separador. Comece pelo balanço global quando possível — ele elimina a corrente de reciclo.
+          </div>
+        </div>
+
+        <div class="theory-card">
+          <h4>Purga</h4>
+          <p>Corrente retirada do loop de reciclo para evitar acúmulo de inertes. O balanço no ponto de purga é:</p>
+          <div class="theory-eq" data-formula="\dot{m}_{\text{reciclo}} = \dot{m}_{\text{retorno}} + \dot{m}_{\text{purga}}"></div>
+        </div>
+
+        <h3 class="section-heading">🧪 Análise de Graus de Liberdade</h3>
+
+        <div class="theory-card">
+          <h4>Graus de Liberdade (GL)</h4>
+          <p>Antes de resolver um problema, verifique o número de graus de liberdade:</p>
+          <div class="theory-eq" data-formula="\text{GL} = n_{\text{incógnitas}} - n_{\text{equações independentes}}"></div>
+          <ul>
+            <li><strong>GL = 0:</strong> sistema determinado — solução única</li>
+            <li><strong>GL &gt; 0:</strong> sistema subdeterminado — faltam informações</li>
+            <li><strong>GL &lt; 0:</strong> sistema sobredeterminado — verificar consistência</li>
+          </ul>
+          <div class="info-callout">
+            <strong>Fontes de equações:</strong> balanços por componente, relações de fração (Σx = 1), especificações de processo (razões, conversões), relações de equilíbrio.
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================= SIMPLE (NO REACTION) TAB ================= -->
+      <section class="mb-panel" id="panel-simple" role="tabpanel">
+
+        <h3 class="section-heading">🧮 Balanço de Massa — Sem Reação</h3>
+
+        <div class="calc-container">
+          <h4>Misturador / Separador — Componente Único</h4>
+          <p class="calc-desc">Calcule a vazão mássica desconhecida em um sistema simples de mistura ou separação em regime permanente.</p>
+
+          <!-- Diagram -->
+          <div class="diagram-box" id="simpleDiagram">
+            <svg width="400" height="120" viewBox="0 0 400 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Inputs arrows -->
+              <line x1="20" y1="40" x2="130" y2="60" stroke="#58a6ff" stroke-width="2" marker-end="url(#arrow)"/>
+              <line x1="20" y1="80" x2="130" y2="60" stroke="#58a6ff" stroke-width="2" marker-end="url(#arrow)"/>
+              <!-- Process box -->
+              <rect x="130" y="35" width="120" height="50" rx="8" fill="#1c2333" stroke="#30363d" stroke-width="2"/>
+              <text x="190" y="65" fill="#8b949e" font-size="13" text-anchor="middle" font-family="Segoe UI, sans-serif">Processo</text>
+              <!-- Output arrows -->
+              <line x1="250" y1="50" x2="380" y2="40" stroke="#3fb950" stroke-width="2" marker-end="url(#arrowG)"/>
+              <line x1="250" y1="70" x2="380" y2="80" stroke="#3fb950" stroke-width="2" marker-end="url(#arrowG)"/>
+              <!-- Labels -->
+              <text x="5" y="37" fill="#58a6ff" font-size="11" font-family="Segoe UI, sans-serif">E₁</text>
+              <text x="5" y="90" fill="#58a6ff" font-size="11" font-family="Segoe UI, sans-serif">E₂</text>
+              <text x="383" y="37" fill="#3fb950" font-size="11" font-family="Segoe UI, sans-serif">S₁</text>
+              <text x="383" y="87" fill="#3fb950" font-size="11" font-family="Segoe UI, sans-serif">S₂</text>
+              <defs>
+                <marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#58a6ff"/></marker>
+                <marker id="arrowG" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#3fb950"/></marker>
+              </defs>
+            </svg>
+          </div>
+
+          <div class="streams-area" id="simpleStreams">
+            <!-- Entradas -->
+            <div class="stream-column" id="simpleInputCol">
+              <h5>Correntes de Entrada <span class="stream-badge" id="simpleInCount">1</span></h5>
+              <div id="simpleInputStreams">
+                <div class="stream-entry" data-index="0">
+                  <div class="stream-header">
+                    <span class="stream-label">Entrada 1</span>
+                  </div>
+                  <div class="stream-fields">
+                    <div class="field">
+                      <label>Vazão (kg/h)</label>
+                      <input type="number" class="stream-flow" placeholder="ex: 100" step="any" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button class="add-stream-btn" id="addSimpleInput">+ Adicionar entrada</button>
+            </div>
+
+            <!-- Saídas -->
+            <div class="stream-column" id="simpleOutputCol">
+              <h5>Correntes de Saída <span class="stream-badge" id="simpleOutCount">1</span></h5>
+              <div id="simpleOutputStreams">
+                <div class="stream-entry" data-index="0">
+                  <div class="stream-header">
+                    <span class="stream-label">Saída 1</span>
+                  </div>
+                  <div class="stream-fields">
+                    <div class="field">
+                      <label>Vazão (kg/h)</label>
+                      <input type="number" class="stream-flow" placeholder="ex: 60" step="any" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button class="add-stream-btn" id="addSimpleOutput">+ Adicionar saída</button>
+            </div>
+          </div>
+
+          <div class="info-callout">
+            <strong>Como usar:</strong> Preencha todas as vazões conhecidas e deixe <em>exatamente uma</em> em branco. O sistema calculará a vazão desconhecida pelo balanço global.
+          </div>
+
+          <div class="action-row">
+            <button class="btn-primary" id="solveSimple">Calcular</button>
+            <button class="btn-secondary" id="clearSimple">Limpar</button>
+          </div>
+
+          <div class="mb-results" id="simpleResults" style="display:none;">
+            <div class="result-box">
+              <p class="result-label">Resultado do Balanço</p>
+              <p class="result-value" id="simpleResultValue">—</p>
+              <p id="simpleResultDetail" style="font-size:0.85rem; color: var(--text-secondary); margin-top: 0.5rem;"></p>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================= REACTION TAB ================= -->
+      <section class="mb-panel" id="panel-reaction" role="tabpanel">
+
+        <h3 class="section-heading">⚗️ Balanço de Massa — Com Reação</h3>
+
+        <div class="calc-container">
+          <h4>Reator com Reação Simples</h4>
+          <p class="calc-desc">Calcule vazões molares de saída dado um reagente com conversão conhecida. Insira a estequiometria e a alimentação.</p>
+
+          <div class="reaction-config">
+            <h5>⚙️ Configuração da Reação</h5>
+            <div class="reaction-row">
+              <div class="field">
+                <label>Estequiometria (ex: A → 2B + C)</label>
+                <input type="text" id="rxnEquation" placeholder="A → 2B + C" />
+              </div>
+              <div class="field">
+                <label>Vazão molar de A na entrada (mol/s)</label>
+                <input type="number" id="rxnFeedA" placeholder="ex: 10" step="any" />
+              </div>
+              <div class="field">
+                <label>Conversão de A (X, 0–1)</label>
+                <input type="number" id="rxnConversion" placeholder="ex: 0.8" step="0.01" min="0" max="1" />
+              </div>
+            </div>
+          </div>
+
+          <div class="reaction-config">
+            <h5>📥 Alimentação adicional (opcional)</h5>
+            <div class="reaction-row" id="rxnFeedExtra">
+              <div class="field">
+                <label>Espécie</label>
+                <input type="text" id="rxnExtraSpecies" placeholder="ex: B" />
+              </div>
+              <div class="field">
+                <label>Vazão molar de entrada (mol/s)</label>
+                <input type="number" id="rxnExtraFeed" placeholder="ex: 0" step="any" />
+              </div>
+              <div class="field">
+                <label>Espécie Inerte</label>
+                <input type="text" id="rxnInertSpecies" placeholder="ex: N₂" />
+              </div>
+              <div class="field">
+                <label>Vazão molar do inerte (mol/s)</label>
+                <input type="number" id="rxnInertFeed" placeholder="ex: 5" step="any" />
+              </div>
+            </div>
+          </div>
+
+          <div class="info-callout">
+            <strong>Formato da reação:</strong> Use "<code>A → 2B + C</code>" ou "<code>2A + B → C + 3D</code>". Coeficientes de 1 podem ser omitidos. Separe reagentes e produtos com "→" ou "-&gt;".
+          </div>
+
+          <div class="action-row">
+            <button class="btn-primary" id="solveReaction">Calcular</button>
+            <button class="btn-secondary" id="clearReaction">Limpar</button>
+          </div>
+
+          <div class="mb-results" id="reactionResults" style="display:none;">
+            <div class="result-box">
+              <p class="result-label">Balanço Molar do Reator</p>
+              <div id="reactionTable"></div>
+              <p id="reactionDetail" style="font-size:0.85rem; color: var(--text-secondary); margin-top: 0.75rem;"></p>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================= MULTICOMPONENT TAB ================= -->
+      <section class="mb-panel" id="panel-multicomponent" role="tabpanel">
+
+        <h3 class="section-heading">🔬 Balanço Multicomponente — Sem Reação</h3>
+
+        <div class="calc-container">
+          <h4>Misturador / Separador Multicomponente</h4>
+          <p class="calc-desc">Resolva balanços por componente em sistemas com várias espécies e correntes. Regime permanente, sem reação.</p>
+
+          <div class="info-callout">
+            <strong>Instruções:</strong> Defina os componentes, configure as correntes com frações mássicas e vazões totais. Deixe <em>uma</em> incógnita (vazão ou fração) em branco por balanço. O sistema resolve componente a componente.
+          </div>
+
+          <!-- Components definition -->
+          <div class="reaction-config">
+            <h5>🧪 Componentes do Sistema</h5>
+            <div id="multiComponents">
+              <div class="stream-entry" style="padding: 0.5rem 0.75rem;">
+                <div class="stream-fields">
+                  <div class="field"><label>Componente 1</label><input type="text" class="comp-name" placeholder="ex: Água" /></div>
+                </div>
+              </div>
+              <div class="stream-entry" style="padding: 0.5rem 0.75rem;">
+                <div class="stream-fields">
+                  <div class="field"><label>Componente 2</label><input type="text" class="comp-name" placeholder="ex: Etanol" /></div>
+                </div>
+              </div>
+            </div>
+            <button class="add-stream-btn" id="addComponent" style="margin-top: 0.5rem;">+ Adicionar componente</button>
+          </div>
+
+          <!-- Streams -->
+          <div class="streams-area" id="multiStreams">
+            <div class="stream-column">
+              <h5>Correntes de Entrada <span class="stream-badge" id="multiInCount">1</span></h5>
+              <div id="multiInputStreams"></div>
+              <button class="add-stream-btn" id="addMultiInput">+ Adicionar entrada</button>
+            </div>
+            <div class="stream-column">
+              <h5>Correntes de Saída <span class="stream-badge" id="multiOutCount">1</span></h5>
+              <div id="multiOutputStreams"></div>
+              <button class="add-stream-btn" id="addMultiOutput">+ Adicionar saída</button>
+            </div>
+          </div>
+
+          <div class="action-row">
+            <button class="btn-primary" id="solveMulti">Calcular</button>
+            <button class="btn-secondary" id="clearMulti">Limpar</button>
+          </div>
+
+          <div class="mb-results" id="multiResults" style="display:none;">
+            <div class="result-box">
+              <p class="result-label">Resultado do Balanço Multicomponente</p>
+              <div id="multiTable"></div>
+              <p id="multiDetail" style="font-size:0.85rem; color: var(--text-secondary); margin-top: 0.75rem;"></p>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================= RECYCLE TAB ================= -->
+      <section class="mb-panel" id="panel-recycle" role="tabpanel">
+
+        <h3 class="section-heading">♻️ Balanço com Reciclo</h3>
+
+        <div class="calc-container">
+          <h4>Sistema Reator–Separador com Reciclo</h4>
+          <p class="calc-desc">Calcule as correntes em um loop de reciclo dado: alimentação fresca, conversão por passe e eficiência de separação.</p>
+
+          <!-- Diagram -->
+          <div class="diagram-box">
+            <svg width="480" height="180" viewBox="0 0 480 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Fresh feed -->
+              <text x="5" y="78" fill="#58a6ff" font-size="11" font-family="Segoe UI, sans-serif">F₀ (fresca)</text>
+              <line x1="80" y1="75" x2="120" y2="75" stroke="#58a6ff" stroke-width="2" marker-end="url(#arrowB2)"/>
+              <!-- Mixer point -->
+              <circle cx="130" cy="75" r="10" fill="#1c2333" stroke="#58a6ff" stroke-width="2"/>
+              <text x="126" y="79" fill="#58a6ff" font-size="11" font-family="Segoe UI, sans-serif">M</text>
+              <!-- Mixer to reactor -->
+              <line x1="140" y1="75" x2="180" y2="75" stroke="#8b949e" stroke-width="2" marker-end="url(#arrowM)"/>
+              <!-- Reactor -->
+              <rect x="180" y="50" width="80" height="50" rx="8" fill="#1c2333" stroke="#d29922" stroke-width="2"/>
+              <text x="220" y="80" fill="#d29922" font-size="12" text-anchor="middle" font-family="Segoe UI, sans-serif">Reator</text>
+              <!-- Reactor to separator -->
+              <line x1="260" y1="75" x2="310" y2="75" stroke="#8b949e" stroke-width="2" marker-end="url(#arrowM)"/>
+              <!-- Separator -->
+              <rect x="310" y="50" width="80" height="50" rx="8" fill="#1c2333" stroke="#3fb950" stroke-width="2"/>
+              <text x="350" y="80" fill="#3fb950" font-size="11" text-anchor="middle" font-family="Segoe UI, sans-serif">Separador</text>
+              <!-- Product out -->
+              <line x1="390" y1="65" x2="460" y2="45" stroke="#3fb950" stroke-width="2" marker-end="url(#arrowG2)"/>
+              <text x="463" y="45" fill="#3fb950" font-size="11" font-family="Segoe UI, sans-serif">P</text>
+              <!-- Purge -->
+              <line x1="390" y1="85" x2="460" y2="105" stroke="#f85149" stroke-width="2" marker-end="url(#arrowR)"/>
+              <text x="463" y="108" fill="#f85149" font-size="11" font-family="Segoe UI, sans-serif">Purga</text>
+              <!-- Recycle line -->
+              <line x1="350" y1="100" x2="350" y2="155" stroke="#58a6ff" stroke-width="2"/>
+              <line x1="350" y1="155" x2="130" y2="155" stroke="#58a6ff" stroke-width="2"/>
+              <line x1="130" y1="155" x2="130" y2="86" stroke="#58a6ff" stroke-width="2" marker-end="url(#arrowB2)"/>
+              <text x="230" y="170" fill="#58a6ff" font-size="11" text-anchor="middle" font-family="Segoe UI, sans-serif">Reciclo (R)</text>
+              <defs>
+                <marker id="arrowB2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#58a6ff"/></marker>
+                <marker id="arrowG2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#3fb950"/></marker>
+                <marker id="arrowM" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#8b949e"/></marker>
+                <marker id="arrowR" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#f85149"/></marker>
+              </defs>
+            </svg>
+          </div>
+
+          <div class="reaction-config">
+            <h5>⚙️ Parâmetros do Sistema</h5>
+            <div class="reaction-row">
+              <div class="field">
+                <label>Alimentação Fresca F₀ (mol/s)</label>
+                <input type="number" id="recycleFeed" placeholder="ex: 100" step="any" />
+              </div>
+              <div class="field">
+                <label>Fração molar de A em F₀</label>
+                <input type="number" id="recycleFeedXa" placeholder="ex: 1.0" step="0.01" min="0" max="1" />
+              </div>
+              <div class="field">
+                <label>Conversão por passe (X<sub>pp</sub>)</label>
+                <input type="number" id="recycleConvPerPass" placeholder="ex: 0.4" step="0.01" min="0" max="1" />
+              </div>
+            </div>
+          </div>
+
+          <div class="reaction-config">
+            <h5>🔀 Separador</h5>
+            <div class="reaction-row">
+              <div class="field">
+                <label>Recuperação de produto (%)</label>
+                <input type="number" id="recycleSepEff" placeholder="ex: 100" step="0.1" min="0" max="100" />
+              </div>
+              <div class="field">
+                <label>Razão de Purga (purga / reciclo+purga)</label>
+                <input type="number" id="recyclePurgeRatio" placeholder="ex: 0 (sem purga)" step="0.01" min="0" max="1" />
+              </div>
+              <div class="field">
+                <label>Coeficiente estequiométrico do produto (ν)</label>
+                <input type="number" id="recycleStoich" placeholder="ν = 1" step="0.1" min="0" />
+              </div>
+            </div>
+          </div>
+
+          <div class="info-callout">
+            <strong>Modelo:</strong> Assume reação simples A → νB. O separador recupera B no produto e recicla A não convertido. A purga retira uma fração da corrente antes do reciclo para evitar acúmulo de inertes.
+          </div>
+
+          <div class="action-row">
+            <button class="btn-primary" id="solveRecycle">Calcular</button>
+            <button class="btn-secondary" id="clearRecycle">Limpar</button>
+          </div>
+
+          <div class="mb-results" id="recycleResults" style="display:none;">
+            <div class="result-box">
+              <p class="result-label">Resultados do Sistema com Reciclo</p>
+              <div id="recycleTable"></div>
+              <p id="recycleDetail" style="font-size:0.85rem; color: var(--text-secondary); margin-top: 0.75rem;"></p>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
     </main>
   </div>
+
+  <!-- ========== Footer ========== -->
   <footer class="site-footer">
     <div class="container">
       <p>&copy; 2026 Q-Engineering Hub — <a href="https://github.com/bryanmzauza/Q-Engineering-Hub" target="_blank" rel="noopener">GitHub</a></p>
     </div>
   </footer>
+
   <script src="../js/main.js"></script>
+  <script src="../js/modules/mass-balance.js"></script>
+
+  <!-- KaTeX rendering -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('[data-formula]').forEach(el => {
+        katex.render(el.getAttribute('data-formula'), el, { displayMode: true, throwOnError: false });
+      });
+      document.querySelectorAll('[data-formula-inline]').forEach(el => {
+        katex.render(el.getAttribute('data-formula-inline'), el, { displayMode: false, throwOnError: false });
+      });
+    });
+  </script>
 </body>
 </html>
