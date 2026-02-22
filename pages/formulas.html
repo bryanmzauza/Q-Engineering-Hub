@@ -85,6 +85,36 @@
       color: var(--border);
       margin: 0 0.1rem;
     }
+
+    /* Topic navigation pills */
+    .topic-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+    .topic-pill {
+      display: inline-block;
+      padding: 0.4rem 1rem;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      background: var(--bg-card);
+      transition: all var(--transition);
+      cursor: pointer;
+    }
+    .topic-pill:hover,
+    .topic-pill.active {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(88, 166, 255, 0.08);
+    }
+    .topic-pill.active {
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
@@ -138,8 +168,21 @@
       <h2 class="page-title">📐 Formulário</h2>
       <p class="page-subtitle">Resumo das principais fórmulas por disciplina da Engenharia Química.</p>
 
+      <!-- Topic navigation -->
+      <div class="topic-pills" id="topicPills">
+        <button class="topic-pill active" data-topic="all">Todos</button>
+        <button class="topic-pill" data-topic="thermodynamics">🌡️ Termodinâmica</button>
+        <button class="topic-pill" data-topic="mass-balance">⚖️ Balanço de Massa</button>
+        <button class="topic-pill" data-topic="energy-balance">🔥 Balanço de Energia</button>
+        <button class="topic-pill" data-topic="reactors">🧪 Reatores Químicos</button>
+        <button class="topic-pill" data-topic="fluid-mechanics">💧 Mecânica dos Fluidos</button>
+        <button class="topic-pill" data-topic="heat-transfer">♨️ Transf. de Calor</button>
+        <button class="topic-pill" data-topic="mass-transfer">🌫️ Transf. de Massa</button>
+        <button class="topic-pill" data-topic="unit-operations">🏭 Operações Unitárias</button>
+      </div>
+
       <!-- ---- Termodinâmica ---- -->
-      <section class="formula-section">
+      <section class="formula-section" data-section="thermodynamics">
         <h3>🌡️ Termodinâmica</h3>
 
         <div class="formula-card">
@@ -197,7 +240,7 @@
       </section>
 
       <!-- ---- Balanço de Massa ---- -->
-      <section class="formula-section">
+      <section class="formula-section" data-section="mass-balance">
         <h3>⚖️ Balanço de Massa</h3>
 
         <div class="formula-card">
@@ -214,7 +257,7 @@
       </section>
 
       <!-- ---- Balanço de Energia ---- -->
-      <section class="formula-section">
+      <section class="formula-section" data-section="energy-balance">
         <h3>🔥 Balanço de Energia</h3>
 
         <div class="formula-card">
@@ -247,7 +290,7 @@
       </section>
 
       <!-- ---- Reatores Químicos ---- -->
-      <section class="formula-section">
+      <section class="formula-section" data-section="reactors">
         <h3>🧪 Reatores Químicos</h3>
 
         <div class="formula-card">
@@ -279,7 +322,7 @@
       </section>
 
       <!-- ---- Mecânica dos Fluidos ---- -->
-      <section class="formula-section">
+      <section class="formula-section" data-section="fluid-mechanics">
         <h3>💧 Mecânica dos Fluidos</h3>
 
         <div class="formula-card">
@@ -318,7 +361,7 @@
       </section>
 
       <!-- ---- Transferência de Calor ---- -->
-      <section class="formula-section">
+      <section class="formula-section" data-section="heat-transfer">
         <h3>♨️ Transferência de Calor</h3>
 
         <div class="formula-card">
@@ -364,7 +407,7 @@
       </section>
 
       <!-- ---- Transferência de Massa ---- -->
-      <section class="formula-section">
+      <section class="formula-section" data-section="mass-transfer">
         <h3>🌫️ Transferência de Massa</h3>
 
         <div class="formula-card">
@@ -388,7 +431,7 @@
       </section>
 
       <!-- ---- Operações Unitárias ---- -->
-      <section class="formula-section">
+      <section class="formula-section" data-section="unit-operations">
         <h3>🏭 Operações Unitárias</h3>
 
         <div class="formula-card">
@@ -424,6 +467,28 @@
   </footer>
 
   <script src="../js/main.js"></script>
+  <script>
+    // Topic pill filtering
+    document.addEventListener('DOMContentLoaded', () => {
+      const pills = document.querySelectorAll('.topic-pill[data-topic]');
+      const sections = document.querySelectorAll('.formula-section[data-section]');
+      if (!pills.length || !sections.length) return;
+      pills.forEach((pill) => {
+        pill.addEventListener('click', () => {
+          const topic = pill.getAttribute('data-topic');
+          pills.forEach((p) => p.classList.remove('active'));
+          pill.classList.add('active');
+          if (topic === 'all') {
+            sections.forEach((s) => (s.style.display = ''));
+          } else {
+            sections.forEach((s) => {
+              s.style.display = s.getAttribute('data-section') === topic ? '' : 'none';
+            });
+          }
+        });
+      });
+    });
+  </script>
   <script>
     // Render all KaTeX formulas once the library is loaded
     document.addEventListener('DOMContentLoaded', () => {
