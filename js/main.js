@@ -33,8 +33,54 @@ document.addEventListener('DOMContentLoaded', () => {
         !sidebar.contains(e.target) &&
         !sidebarToggle.contains(e.target)
       ) {
-        sidebar.classList.close('open');
+        sidebar.classList.remove('open');
       }
+    });
+  }
+
+  // ---- Sidebar Collapse (desktop) ----
+  if (sidebar) {
+    // Create collapse toggle button
+    const collapseBtn = document.createElement('button');
+    collapseBtn.className = 'sidebar-collapse-btn';
+    collapseBtn.setAttribute('aria-label', 'Recolher menu lateral');
+    collapseBtn.innerHTML =
+      '<span class="collapse-icon">«</span><span class="collapse-label">Recolher</span>';
+    sidebar.appendChild(collapseBtn);
+
+    // Add title tooltips for collapsed state
+    sidebar.querySelectorAll('.sidebar-nav a').forEach((link) => {
+      link.title = link.textContent.trim();
+    });
+
+    const mql = window.matchMedia('(min-width: 769px)');
+
+    const applyCollapsedState = () => {
+      if (mql.matches && localStorage.getItem('sidebarCollapsed') === 'true') {
+        sidebar.classList.add('collapsed');
+        collapseBtn.querySelector('.collapse-icon').textContent = '»';
+        collapseBtn.setAttribute('aria-label', 'Expandir menu lateral');
+      } else {
+        sidebar.classList.remove('collapsed');
+        collapseBtn.querySelector('.collapse-icon').textContent = '«';
+        collapseBtn.setAttribute('aria-label', 'Recolher menu lateral');
+      }
+    };
+
+    applyCollapsedState();
+    mql.addEventListener('change', applyCollapsedState);
+
+    collapseBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('collapsed');
+      const collapsed = sidebar.classList.contains('collapsed');
+      collapseBtn.querySelector('.collapse-icon').textContent = collapsed
+        ? '»'
+        : '«';
+      collapseBtn.setAttribute(
+        'aria-label',
+        collapsed ? 'Expandir menu lateral' : 'Recolher menu lateral'
+      );
+      localStorage.setItem('sidebarCollapsed', collapsed);
     });
   }
 
