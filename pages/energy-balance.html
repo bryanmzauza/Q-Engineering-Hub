@@ -3,20 +3,358 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Balanço de Energia — Q-Engineering Hub</title>
+  <meta name="description" content="Balanço de Energia | Calculadoras para calor sensível, mudança de fase, trocadores de calor e temperatura adiabática | Q-Engineering Hub" />
+  <title>Balanço de Energia | Q-Engineering Hub</title>
   <link rel="stylesheet" href="../css/style.css" />
+  <!-- KaTeX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous" />
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+  <style>
+    /* ---- Energy Balance Page Styles ---- */
+
+    /* Tab navigation */
+    .eb-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+    .eb-tab {
+      padding: 0.5rem 1.15rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--transition);
+      font-family: inherit;
+    }
+    .eb-tab:hover {
+      border-color: var(--accent);
+      color: var(--text-primary);
+    }
+    .eb-tab.active {
+      background: var(--accent-dark);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    /* Tab panels */
+    .eb-panel {
+      display: none;
+    }
+    .eb-panel.active {
+      display: block;
+    }
+
+    /* Theory cards */
+    .theory-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 1.25rem;
+      transition: border-color var(--transition);
+    }
+    .theory-card:hover {
+      border-color: rgba(88, 166, 255, 0.3);
+    }
+    .theory-card h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .theory-card p, .theory-card li {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+    .theory-card ul {
+      padding-left: 1.25rem;
+      margin-top: 0.5rem;
+    }
+    .theory-card ul li {
+      margin-bottom: 0.35rem;
+    }
+    .theory-eq {
+      background: rgba(88, 166, 255, 0.04);
+      border: 1px solid rgba(88, 166, 255, 0.12);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin: 0.85rem 0;
+      text-align: center;
+      overflow-x: auto;
+    }
+    .theory-eq .katex {
+      font-size: 1.25em;
+      color: var(--accent);
+    }
+
+    /* Section headings */
+    .section-heading {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 2rem 0 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .section-heading:first-child {
+      margin-top: 0;
+    }
+
+    /* Calculator containers */
+    .calc-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .calc-container h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+    .calc-container .calc-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+    }
+
+    /* Input grid */
+    .input-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    .input-grid .field label {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 0.25rem;
+      font-weight: 500;
+    }
+    .input-grid .field input,
+    .input-grid .field select {
+      width: 100%;
+      padding: 0.45rem 0.65rem;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      font-size: 0.85rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color var(--transition);
+    }
+    .input-grid .field input:focus,
+    .input-grid .field select:focus {
+      border-color: var(--accent);
+    }
+
+    /* Info callout */
+    .info-callout {
+      background: rgba(88, 166, 255, 0.06);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 0.85rem 1.15rem;
+      margin: 1rem 0;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    .info-callout strong {
+      color: var(--text-primary);
+    }
+
+    /* Solve / action buttons */
+    .action-row {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin: 1.25rem 0;
+    }
+    .btn-primary {
+      padding: 0.6rem 1.5rem;
+      background: var(--accent-dark);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background var(--transition), box-shadow var(--transition);
+    }
+    .btn-primary:hover {
+      background: var(--accent);
+      box-shadow: 0 2px 12px rgba(88, 166, 255, 0.25);
+    }
+    .btn-secondary {
+      padding: 0.6rem 1.5rem;
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      color: var(--text-primary);
+    }
+
+    /* Results */
+    .eb-results {
+      margin-top: 1rem;
+    }
+    .eb-results table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+    .eb-results th, .eb-results td {
+      padding: 0.6rem 0.85rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .eb-results th {
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      letter-spacing: 0.05em;
+      background: var(--bg-secondary);
+    }
+    .eb-results td {
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+    }
+    .eb-results .highlight {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* Streams section for heat exchanger */
+    .streams-area {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+    .stream-column h5 {
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .stream-column h5 .stream-badge {
+      font-size: 0.7rem;
+      background: var(--accent-dark);
+      color: #fff;
+      border-radius: 999px;
+      padding: 0.15rem 0.5rem;
+      font-weight: 500;
+    }
+
+    /* Diagram visualization */
+    .diagram-box {
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      margin: 1rem 0;
+      text-align: center;
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .diagram-box svg {
+      max-width: 100%;
+    }
+
+    /* Step breakdown */
+    .step-breakdown {
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 1rem 1.25rem;
+      margin-top: 0.75rem;
+    }
+    .step-breakdown h5 {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+    .step-breakdown .step-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.35rem 0;
+      border-bottom: 1px solid rgba(48, 54, 61, 0.5);
+      font-size: 0.85rem;
+    }
+    .step-breakdown .step-item:last-child {
+      border-bottom: none;
+      font-weight: 600;
+      color: var(--accent);
+    }
+    .step-breakdown .step-item span:first-child {
+      color: var(--text-secondary);
+    }
+    .step-breakdown .step-item span:last-child {
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+    }
+
+    /* Mobile overrides */
+    @media (max-width: 768px) {
+      .streams-area {
+        grid-template-columns: 1fr;
+      }
+      .input-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
+
+  <!-- ========== Header ========== -->
   <header class="site-header">
     <div class="container header-inner">
-      <a href="../index.html" class="logo">
+      <a href="../index.html" class="logo" aria-label="Q-Engineering Hub — Página inicial">
         <span class="logo-icon">⚗️</span>
         <div class="logo-text">
           <h1>Q-Engineering Hub</h1>
           <span>Engenharia Química</span>
         </div>
       </a>
-      <button class="menu-toggle" id="menuToggle">☰</button>
+
+      <button class="menu-toggle" aria-label="Abrir menu" id="menuToggle">☰</button>
+
       <nav class="header-nav" id="headerNav">
         <a href="../index.html">Início</a>
         <a href="properties.html">Propriedades</a>
@@ -25,10 +363,14 @@
       </nav>
     </div>
   </header>
+
+  <!-- ========== Page Wrapper ========== -->
   <div class="page-wrapper">
+
+    <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
       <p class="sidebar-title">Módulos</p>
-      <nav class="sidebar-nav">
+      <nav class="sidebar-nav" aria-label="Navegação de módulos">
         <a href="unit-converter.html"><span class="nav-icon">🔄</span> Conversor de Unidades</a>
         <a href="mass-balance.html"><span class="nav-icon">⚖️</span> Balanço de Massa</a>
         <a href="energy-balance.html" class="active"><span class="nav-icon">🔥</span> Balanço de Energia</a>
@@ -43,21 +385,630 @@
         <a href="calculus.html"><span class="nav-icon">∫</span> Cálculo</a>
       </nav>
     </aside>
+
+    <!-- Main Content -->
     <main class="main-content">
-      <h2 class="page-title">🔥 Balanço de Energia</h2>
-      <p class="page-subtitle">Este módulo está em desenvolvimento e será disponibilizado em breve.</p>
-      <div class="result-box" style="text-align:center; padding: 3rem 1.5rem;">
-        <p style="font-size: 3rem; margin-bottom: 1rem;">🚧</p>
-        <p style="font-size: 1.1rem; color: var(--text-secondary);">Em breve — estamos trabalhando neste módulo!</p>
-        <p style="margin-top: 1rem;"><a href="../index.html">← Voltar ao início</a></p>
+      <button class="menu-toggle" id="sidebarToggle" aria-label="Abrir sidebar">☰</button>
+
+      <h2 class="page-title">Balanço de Energia</h2>
+      <p class="page-subtitle">Calculadoras e referência teórica para balanços energéticos em processos químicos — entalpia, Cp, trocadores de calor e temperatura adiabática.</p>
+
+      <!-- Tab Navigation -->
+      <div class="eb-tabs" role="tablist" aria-label="Seções do Balanço de Energia">
+        <button class="eb-tab active" data-tab="theory" role="tab" aria-selected="true">Teoria</button>
+        <button class="eb-tab" data-tab="sensible" role="tab" aria-selected="false">Calor Sensível</button>
+        <button class="eb-tab" data-tab="phase" role="tab" aria-selected="false">Mudança de Fase</button>
+        <button class="eb-tab" data-tab="exchanger" role="tab" aria-selected="false">Trocador de Calor</button>
+        <button class="eb-tab" data-tab="adiabatic" role="tab" aria-selected="false">Temp. Adiabática</button>
       </div>
+
+      <!-- ===================== THEORY TAB ===================== -->
+      <section class="eb-panel active" id="panel-theory" role="tabpanel">
+
+        <h3 class="section-heading">Fundamentos do Balanço de Energia</h3>
+
+        <div class="theory-card">
+          <h4>Primeira Lei da Termodinâmica</h4>
+          <p>O balanço de energia é fundamentado na Primeira Lei da Termodinâmica, que estabelece que a energia não pode ser criada nem destruída, apenas transformada de uma forma para outra. Para um sistema aberto em regime permanente, a forma geral do balanço de energia é:</p>
+          <div class="theory-eq" data-formula="\dot{Q} - \dot{W}_s = \sum \dot{m}_{out} \hat{H}_{out} - \sum \dot{m}_{in} \hat{H}_{in} + \Delta \dot{E}_c + \Delta \dot{E}_p"></div>
+          <p style="margin-top: 0.75rem;">Cada variável representa:</p>
+          <ul>
+            <li><span data-formula-inline="\dot{Q}"></span>: taxa de transferência de calor para o sistema (W ou J/s)</li>
+            <li><span data-formula-inline="\dot{W}_s"></span>: trabalho de eixo realizado pelo sistema (W)</li>
+            <li><span data-formula-inline="\hat{H}"></span>: entalpia específica das correntes (J/kg)</li>
+            <li><span data-formula-inline="\Delta \dot{E}_c"></span>: variação de energia cinética (geralmente desprezível)</li>
+            <li><span data-formula-inline="\Delta \dot{E}_p"></span>: variação de energia potencial (geralmente desprezível)</li>
+          </ul>
+          <p style="margin-top: 0.75rem;">Na grande maioria dos problemas de engenharia química, as variações de energia cinética e potencial são desprezíveis frente às variações de entalpia. O balanço simplifica-se para:</p>
+          <div class="theory-eq" data-formula="\dot{Q} - \dot{W}_s = \Delta \dot{H} = \sum \dot{m}_{out} \hat{H}_{out} - \sum \dot{m}_{in} \hat{H}_{in}"></div>
+        </div>
+
+        <div class="theory-card">
+          <h4>Sistemas Abertos vs. Fechados</h4>
+          <p>A forma do balanço de energia depende do tipo de sistema:</p>
+          <ul>
+            <li><strong>Sistema fechado (batelada):</strong> não há fluxo de massa. O balanço se reduz a:</li>
+          </ul>
+          <div class="theory-eq" data-formula="Q - W = \Delta U = m(u_2 - u_1)"></div>
+          <ul>
+            <li><strong>Sistema aberto (contínuo):</strong> há fluxo de massa através das fronteiras. O balanço utiliza entalpia e inclui trabalho de fluxo (<span data-formula-inline="PV"></span>):</li>
+          </ul>
+          <div class="theory-eq" data-formula="\dot{Q} - \dot{W}_s = \sum \dot{n}_{out} \hat{H}_{out} - \sum \dot{n}_{in} \hat{H}_{in}"></div>
+          <p style="margin-top: 0.75rem;">A diferença fundamental é que em sistemas abertos trabalhamos com entalpia (<span data-formula-inline="H = U + PV"></span>), enquanto em sistemas fechados trabalhamos com energia interna (<span data-formula-inline="U"></span>).</p>
+        </div>
+
+        <h3 class="section-heading">Entalpia e Capacidade Calorífica</h3>
+
+        <div class="theory-card">
+          <h4>Entalpia (H)</h4>
+          <p>A entalpia é uma propriedade termodinâmica definida como a soma da energia interna com o produto pressão-volume:</p>
+          <div class="theory-eq" data-formula="H = U + PV"></div>
+          <p style="margin-top: 0.5rem;">Para processos a pressão constante (muito comuns na engenharia química), a variação de entalpia é igual ao calor trocado:</p>
+          <div class="theory-eq" data-formula="Q_P = \Delta H = H_2 - H_1"></div>
+          <p style="margin-top: 0.75rem;">A entalpia é uma propriedade de estado — depende apenas do estado atual do sistema (T, P, composição, fase), não do caminho percorrido para chegar a esse estado. Isso permite calcular <span data-formula-inline="\Delta H"></span> por caminhos hipotéticos convenientes.</p>
+        </div>
+
+        <div class="theory-card">
+          <h4>Capacidade Calorífica (Cp e Cv)</h4>
+          <p>A capacidade calorífica mede a quantidade de energia necessária para elevar a temperatura de uma substância em 1 grau:</p>
+          <div class="theory-eq" data-formula="C_p = \left(\frac{\partial H}{\partial T}\right)_P \qquad \qquad C_v = \left(\frac{\partial U}{\partial T}\right)_V"></div>
+          <ul>
+            <li><span data-formula-inline="C_p"></span>: a pressão constante — usada para processos abertos e a maioria dos cálculos de engenharia</li>
+            <li><span data-formula-inline="C_v"></span>: a volume constante — usada para sistemas fechados rígidos</li>
+          </ul>
+          <p style="margin-top: 0.75rem;">Para gases ideais, a relação entre os dois é:</p>
+          <div class="theory-eq" data-formula="C_p - C_v = R = 8{,}314 \text{ J/(mol} \cdot \text{K)}"></div>
+          <p style="margin-top: 0.5rem;">Em geral, <span data-formula-inline="C_p"></span> varia com a temperatura. Uma representação polinomial comum é:</p>
+          <div class="theory-eq" data-formula="C_p = a + bT + cT^2 + dT^3"></div>
+          <p style="margin-top: 0.5rem;">onde <em>a</em>, <em>b</em>, <em>c</em>, <em>d</em> são constantes tabeladas para cada substância e <em>T</em> está em Kelvin. Para cálculos simplificados, pode-se usar um <span data-formula-inline="C_p"></span> médio no intervalo de temperatura.</p>
+        </div>
+
+        <h3 class="section-heading">Calor Sensível e Calor Latente</h3>
+
+        <div class="theory-card">
+          <h4>Calor Sensível</h4>
+          <p>O calor sensível é a energia necessária para alterar a temperatura de uma substância sem mudança de fase. Para uma corrente com vazão mássica <span data-formula-inline="\dot{m}"></span> e capacidade calorífica <span data-formula-inline="C_p"></span>:</p>
+          <div class="theory-eq" data-formula="\dot{Q}_{\text{sens\'{i}vel}} = \dot{m} \cdot C_p \cdot \Delta T = \dot{m} \cdot C_p \cdot (T_2 - T_1)"></div>
+          <p style="margin-top: 0.5rem;">Em termos molares:</p>
+          <div class="theory-eq" data-formula="\dot{Q}_{\text{sens\'{i}vel}} = \dot{n} \cdot \bar{C}_p \cdot (T_2 - T_1)"></div>
+          <p style="margin-top: 0.5rem;">Onde <span data-formula-inline="\bar{C}_p"></span> é a capacidade calorífica molar (J/mol·K). Quando <span data-formula-inline="C_p"></span> varia significativamente com <em>T</em>, a integral deve ser usada:</p>
+          <div class="theory-eq" data-formula="\Delta H = \int_{T_1}^{T_2} C_p \, dT"></div>
+        </div>
+
+        <div class="theory-card">
+          <h4>Calor Latente (Mudança de Fase)</h4>
+          <p>O calor latente é a energia associada a mudanças de fase (fusão, vaporização, sublimação) a temperatura constante. As principais transições são:</p>
+          <ul>
+            <li><strong>Entalpia de vaporização</strong> (<span data-formula-inline="\Delta H_{vap}"></span>): energia para converter líquido em vapor no ponto de ebulição</li>
+            <li><strong>Entalpia de fusão</strong> (<span data-formula-inline="\Delta H_{fus}"></span>): energia para converter sólido em líquido no ponto de fusão</li>
+            <li><strong>Entalpia de sublimação</strong> (<span data-formula-inline="\Delta H_{sub}"></span>): energia para converter sólido diretamente em vapor</li>
+          </ul>
+          <div class="theory-eq" data-formula="\dot{Q}_{\text{latente}} = \dot{m} \cdot \Delta H_{vap} \qquad \text{ou} \qquad \dot{Q}_{\text{latente}} = \dot{n} \cdot \Delta \bar{H}_{vap}"></div>
+          <div class="info-callout">
+            <strong>Importante:</strong> <span data-formula-inline="\Delta H_{vap}"></span> varia com a temperatura e pressão. Os valores tabelados são geralmente referidos ao ponto de ebulição normal (1 atm). Para outras temperaturas, pode-se usar a equação de Clausius-Clapeyron ou a correlação de Watson.
+          </div>
+        </div>
+
+        <h3 class="section-heading">Caminhos de Entalpia</h3>
+
+        <div class="theory-card">
+          <h4>Caminho Hipotético de Entalpia</h4>
+          <p>Como a entalpia é uma propriedade de estado, podemos calcular <span data-formula-inline="\Delta H"></span> por qualquer caminho conveniente. Para uma substância que muda de temperatura e de fase, um caminho típico é:</p>
+          <ul>
+            <li><strong>Etapa 1:</strong> Aquecer o líquido de <span data-formula-inline="T_1"></span> até o ponto de ebulição <span data-formula-inline="T_b"></span></li>
+            <li><strong>Etapa 2:</strong> Vaporizar o líquido a <span data-formula-inline="T_b"></span> (<span data-formula-inline="\Delta H_{vap}"></span>)</li>
+            <li><strong>Etapa 3:</strong> Aquecer o vapor de <span data-formula-inline="T_b"></span> até <span data-formula-inline="T_2"></span></li>
+          </ul>
+          <div class="theory-eq" data-formula="\Delta H = \underbrace{\int_{T_1}^{T_b} C_{p,l} \, dT}_{\text{l\'{i}quido}} + \Delta H_{vap} + \underbrace{\int_{T_b}^{T_2} C_{p,g} \, dT}_{\text{vapor}}"></div>
+          <div class="info-callout">
+            <strong>Nota:</strong> Este mesmo princípio se aplica quando há fusão: aquecer o sólido até o ponto de fusão, fundir, e aquecer o líquido. Podem existir múltiplas mudanças de fase no caminho.
+          </div>
+        </div>
+
+        <h3 class="section-heading">Entalpia de Reação</h3>
+
+        <div class="theory-card">
+          <h4>Calor de Reação</h4>
+          <p>A entalpia de reação (<span data-formula-inline="\Delta H_{rxn}"></span>) é a energia liberada ou absorvida quando uma reação ocorre a uma dada temperatura e pressão:</p>
+          <div class="theory-eq" data-formula="\Delta H_{rxn}^{\circ} = \sum \nu_i \cdot \Delta H_{f,i}^{\circ} (\text{produtos}) - \sum \nu_i \cdot \Delta H_{f,i}^{\circ} (\text{reagentes})"></div>
+          <p style="margin-top: 0.5rem;">Convenção de sinais:</p>
+          <ul>
+            <li><span data-formula-inline="\Delta H_{rxn} < 0"></span>: reação <strong>exotérmica</strong> (libera calor)</li>
+            <li><span data-formula-inline="\Delta H_{rxn} > 0"></span>: reação <strong>endotérmica</strong> (absorve calor)</li>
+          </ul>
+        </div>
+
+        <div class="theory-card">
+          <h4>Lei de Hess</h4>
+          <p>A entalpia de uma reação global pode ser obtida somando as entalpias de reações intermediárias que, combinadas, produzem a reação desejada. Isso permite calcular <span data-formula-inline="\Delta H_{rxn}"></span> para reações cujos dados diretos não estão disponíveis:</p>
+          <div class="theory-eq" data-formula="\Delta H_{rxn} = \sum \Delta H_{\text{etapas intermedi\'{a}rias}}"></div>
+          <p style="margin-top: 0.75rem;">Na prática, a Lei de Hess é aplicada através das entalpias de formação padrão (<span data-formula-inline="\Delta H_f^{\circ}"></span>) dos compostos, todas referidas a 25 °C e 1 atm. A entalpia de formação dos elementos em seu estado padrão é zero por definição.</p>
+        </div>
+
+        <div class="theory-card">
+          <h4>Efeito da Temperatura na Entalpia de Reação</h4>
+          <p>Quando a reação ocorre a uma temperatura <em>T</em> diferente de 25 °C, é necessário corrigir a entalpia de reação usando a Lei de Kirchhoff:</p>
+          <div class="theory-eq" data-formula="\Delta H_{rxn}(T) = \Delta H_{rxn}^{\circ}(T_{\text{ref}}) + \int_{T_{\text{ref}}}^{T} \Delta C_p \, dT"></div>
+          <p style="margin-top: 0.5rem;">onde <span data-formula-inline="\Delta C_p = \sum \nu_i C_{p,i}(\text{prod.}) - \sum \nu_i C_{p,i}(\text{reag.})"></span> é a variação da capacidade calorífica entre produtos e reagentes.</p>
+        </div>
+
+        <h3 class="section-heading">Balanço de Energia em Processos</h3>
+
+        <div class="theory-card">
+          <h4>Balanço em Regime Estacionário sem Reação</h4>
+          <p>Para um processo sem reação, sem trabalho de eixo e desprezando variações de energia cinética e potencial:</p>
+          <div class="theory-eq" data-formula="\dot{Q} = \sum \dot{m}_{out} \hat{H}_{out} - \sum \dot{m}_{in} \hat{H}_{in}"></div>
+          <p style="margin-top: 0.5rem;">Quando a composição não muda (apenas aquecimento/resfriamento):</p>
+          <div class="theory-eq" data-formula="\dot{Q} = \dot{m} \cdot C_p \cdot (T_{out} - T_{in})"></div>
+          <p style="margin-top: 0.75rem;">Exemplos típicos: aquecedores, resfriadores, condensadores, evaporadores, tanques de mistura adiabáticos.</p>
+        </div>
+
+        <div class="theory-card">
+          <h4>Balanço em Regime Estacionário com Reação</h4>
+          <p>Quando há reação química, a entalpia de reação deve ser incluída no balanço. Utilizando a extensão de reação <span data-formula-inline="\dot{\xi}"></span>:</p>
+          <div class="theory-eq" data-formula="\dot{Q} = \sum \dot{n}_{out} \hat{H}_{out} - \sum \dot{n}_{in} \hat{H}_{in} + \dot{W}_s"></div>
+          <p style="margin-top: 0.5rem;">Na abordagem pelo "calor de reação", o balanço se escreve como:</p>
+          <div class="theory-eq" data-formula="\dot{Q} = \dot{\xi} \cdot \Delta H_{rxn}(T_{ref}) + \sum \dot{n}_{out} \int_{T_{ref}}^{T_{out}} C_{p,i} \, dT - \sum \dot{n}_{in} \int_{T_{ref}}^{T_{in}} C_{p,i} \, dT"></div>
+          <div class="info-callout">
+            <strong>Temperatura de referência:</strong> É comum adotar 25 °C como referência, pois os dados de <span data-formula-inline="\Delta H_f^{\circ}"></span> são tabulados nessa temperatura. Quando reagentes e produtos estão à mesma temperatura de referência, o calor trocado é simplesmente <span data-formula-inline="\dot{Q} = \dot{\xi} \cdot \Delta H_{rxn}^{\circ}"></span>.
+          </div>
+        </div>
+
+        <h3 class="section-heading">Trocadores de Calor</h3>
+
+        <div class="theory-card">
+          <h4>Princípios de Trocadores de Calor</h4>
+          <p>Um trocador de calor transfere energia térmica entre dois fluidos sem misturá-los. O balanço global para um trocador adiabático (sem perdas) é:</p>
+          <div class="theory-eq" data-formula="\dot{Q} = \dot{m}_h \cdot C_{p,h} \cdot (T_{h,in} - T_{h,out}) = \dot{m}_c \cdot C_{p,c} \cdot (T_{c,out} - T_{c,in})"></div>
+          <p style="margin-top: 0.5rem;">Onde os índices <em>h</em> e <em>c</em> referem-se ao fluido quente (<em>hot</em>) e frio (<em>cold</em>), respectivamente.</p>
+        </div>
+
+        <div class="theory-card">
+          <h4>Método LMTD (Diferença Média Logarítmica de Temperatura)</h4>
+          <p>A equação de projeto de um trocador de calor relaciona a taxa de transferência de calor com a área, o coeficiente global e a diferença de temperatura média:</p>
+          <div class="theory-eq" data-formula="\dot{Q} = U \cdot A \cdot \Delta T_{LMTD}"></div>
+          <p style="margin-top: 0.5rem;">Para um trocador contracorrente:</p>
+          <div class="theory-eq" data-formula="\Delta T_{LMTD} = \frac{\Delta T_1 - \Delta T_2}{\ln(\Delta T_1 / \Delta T_2)}"></div>
+          <p style="margin-top: 0.5rem;">Onde:</p>
+          <ul>
+            <li><span data-formula-inline="\Delta T_1 = T_{h,in} - T_{c,out}"></span> (contracorrente) ou <span data-formula-inline="T_{h,in} - T_{c,in}"></span> (paralelo)</li>
+            <li><span data-formula-inline="\Delta T_2 = T_{h,out} - T_{c,in}"></span> (contracorrente) ou <span data-formula-inline="T_{h,out} - T_{c,out}"></span> (paralelo)</li>
+            <li><span data-formula-inline="U"></span>: coeficiente global de transferência de calor (W/m²·K)</li>
+            <li><span data-formula-inline="A"></span>: área de troca térmica (m²)</li>
+          </ul>
+          <div class="info-callout">
+            <strong>Caso especial:</strong> Quando <span data-formula-inline="\Delta T_1 = \Delta T_2"></span>, a LMTD se reduz ao próprio valor de <span data-formula-inline="\Delta T_1"></span> (limite matemático da expressão logarítmica).
+          </div>
+        </div>
+
+        <h3 class="section-heading">Processos Adiabáticos</h3>
+
+        <div class="theory-card">
+          <h4>Temperatura Adiabática de Reação</h4>
+          <p>Em um reator adiabático (<span data-formula-inline="\dot{Q} = 0"></span>), toda a energia liberada (ou absorvida) pela reação é usada para alterar a temperatura da mistura. O balanço de energia se torna:</p>
+          <div class="theory-eq" data-formula="0 = \dot{\xi} \cdot \Delta H_{rxn}(T_{ref}) + \sum \dot{n}_{out} \cdot C_{p,i} \cdot (T_{ad} - T_{ref})"></div>
+          <p style="margin-top: 0.5rem;">Resolvendo para a temperatura adiabática:</p>
+          <div class="theory-eq" data-formula="T_{ad} = T_{in} - \frac{\dot{\xi} \cdot \Delta H_{rxn}}{\sum \dot{n}_{out} \cdot C_{p,i}}"></div>
+          <p style="margin-top: 0.75rem;">Para uma reação exotérmica (<span data-formula-inline="\Delta H_{rxn} < 0"></span>), <span data-formula-inline="T_{ad} > T_{in}"></span>. Para endotérmica, <span data-formula-inline="T_{ad} < T_{in}"></span>.</p>
+          <div class="info-callout">
+            <strong>Simplificação:</strong> Se a alimentação contém apenas o reagente A com <span data-formula-inline="C_p"></span> médio e conversão <em>X</em>:
+          </div>
+          <div class="theory-eq" data-formula="T_{ad} = T_{in} + \frac{(-\Delta H_{rxn}) \cdot X_A \cdot F_{A0}}{\sum F_i \cdot C_{p,i}}"></div>
+        </div>
+
+        <div class="theory-card">
+          <h4>Temperatura de Mistura Adiabática</h4>
+          <p>Quando duas correntes a temperaturas diferentes são misturadas sem troca de calor com a vizinhança, a temperatura final da mistura é determinada pelo balanço:</p>
+          <div class="theory-eq" data-formula="\dot{m}_1 \cdot C_{p,1} \cdot (T_m - T_1) + \dot{m}_2 \cdot C_{p,2} \cdot (T_m - T_2) = 0"></div>
+          <p style="margin-top: 0.5rem;">Resolvendo:</p>
+          <div class="theory-eq" data-formula="T_m = \frac{\dot{m}_1 C_{p,1} T_1 + \dot{m}_2 C_{p,2} T_2}{\dot{m}_1 C_{p,1} + \dot{m}_2 C_{p,2}}"></div>
+        </div>
+
+      </section>
+
+      <!-- ================= SENSIBLE HEAT TAB ================= -->
+      <section class="eb-panel" id="panel-sensible" role="tabpanel">
+
+        <h3 class="section-heading">Calor Sensível</h3>
+
+        <div class="calc-container">
+          <h4>Aquecimento / Resfriamento sem Mudança de Fase</h4>
+          <p class="calc-desc">Calcule a taxa de calor, a temperatura final, o Cp necessário ou a vazão — deixe exatamente uma incógnita em branco.</p>
+
+          <div class="diagram-box">
+            <svg width="420" height="100" viewBox="0 0 420 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <line x1="30" y1="50" x2="130" y2="50" stroke="#58a6ff" stroke-width="2" marker-end="url(#arrSH)"/>
+              <rect x="130" y="20" width="160" height="60" rx="10" fill="#1c2333" stroke="#d29922" stroke-width="2"/>
+              <text x="210" y="45" fill="#d29922" font-size="12" text-anchor="middle" font-family="Segoe UI, sans-serif">Aquecedor /</text>
+              <text x="210" y="62" fill="#d29922" font-size="12" text-anchor="middle" font-family="Segoe UI, sans-serif">Resfriador</text>
+              <line x1="290" y1="50" x2="400" y2="50" stroke="#3fb950" stroke-width="2" marker-end="url(#arrSHG)"/>
+              <text x="10" y="45" fill="#58a6ff" font-size="11" font-family="Segoe UI, sans-serif">T₁</text>
+              <text x="402" y="45" fill="#3fb950" font-size="11" font-family="Segoe UI, sans-serif">T₂</text>
+              <!-- Q arrow -->
+              <line x1="210" y1="5" x2="210" y2="18" stroke="#f85149" stroke-width="2" marker-end="url(#arrSHR)"/>
+              <text x="225" y="12" fill="#f85149" font-size="11" font-family="Segoe UI, sans-serif">Q</text>
+              <defs>
+                <marker id="arrSH" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#58a6ff"/></marker>
+                <marker id="arrSHG" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#3fb950"/></marker>
+                <marker id="arrSHR" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#f85149"/></marker>
+              </defs>
+            </svg>
+          </div>
+
+          <div class="input-grid">
+            <div class="field">
+              <label>Base de cálculo</label>
+              <select id="shBasis">
+                <option value="mass">Mássica (kg/s)</option>
+                <option value="molar">Molar (mol/s)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label id="shFlowLabel">Vazão (kg/s)</label>
+              <input type="number" id="shFlow" placeholder="ex: 2.5" step="any" />
+            </div>
+            <div class="field">
+              <label id="shCpLabel">Cp (J/kg·K)</label>
+              <input type="number" id="shCp" placeholder="ex: 4186" step="any" />
+            </div>
+            <div class="field">
+              <label>T inicial (°C)</label>
+              <input type="number" id="shT1" placeholder="ex: 25" step="any" />
+            </div>
+            <div class="field">
+              <label>T final (°C)</label>
+              <input type="number" id="shT2" placeholder="ex: 80" step="any" />
+            </div>
+            <div class="field">
+              <label>Q — Taxa de calor (W)</label>
+              <input type="number" id="shQ" placeholder="calculado" step="any" />
+            </div>
+          </div>
+
+          <div class="info-callout">
+            <strong>Como usar:</strong> Preencha 4 dos 5 campos (vazão, Cp, T1, T2, Q) e deixe <em>um</em> em branco — ele será calculado. Q positivo = aquecimento, Q negativo = resfriamento.
+          </div>
+
+          <div class="action-row">
+            <button class="btn-primary" id="solveSensible">Calcular</button>
+            <button class="btn-secondary" id="clearSensible">Limpar</button>
+          </div>
+
+          <div class="eb-results" id="sensibleResults" style="display:none;">
+            <div class="result-box">
+              <p class="result-label">Resultado — Calor Sensível</p>
+              <p class="result-value" id="sensibleResultValue">—</p>
+              <p id="sensibleResultDetail" style="font-size:0.85rem; color: var(--text-secondary); margin-top: 0.5rem;"></p>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================= PHASE CHANGE TAB ================= -->
+      <section class="eb-panel" id="panel-phase" role="tabpanel">
+
+        <h3 class="section-heading">Mudança de Fase com Calor Sensível</h3>
+
+        <div class="calc-container">
+          <h4>Aquecimento com Mudança de Fase</h4>
+          <p class="calc-desc">Calcule o calor total necessário para aquecer uma substância de T₁ a T₂, incluindo vaporização se a faixa de temperatura cruzar o ponto de ebulição.</p>
+
+          <div class="input-grid">
+            <div class="field">
+              <label>Base de cálculo</label>
+              <select id="phBasis">
+                <option value="mass">Mássica (kg/s)</option>
+                <option value="molar">Molar (mol/s)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label id="phFlowLabel">Vazão (kg/s)</label>
+              <input type="number" id="phFlow" placeholder="ex: 1.0" step="any" />
+            </div>
+            <div class="field">
+              <label id="phCpLiqLabel">Cp líquido (J/kg·K)</label>
+              <input type="number" id="phCpLiq" placeholder="ex: 4186" step="any" />
+            </div>
+            <div class="field">
+              <label id="phCpVapLabel">Cp vapor (J/kg·K)</label>
+              <input type="number" id="phCpVap" placeholder="ex: 2010" step="any" />
+            </div>
+          </div>
+
+          <div class="input-grid">
+            <div class="field">
+              <label>T inicial (°C)</label>
+              <input type="number" id="phT1" placeholder="ex: 25" step="any" />
+            </div>
+            <div class="field">
+              <label>T final (°C)</label>
+              <input type="number" id="phT2" placeholder="ex: 150" step="any" />
+            </div>
+            <div class="field">
+              <label>Ponto de ebulição (°C)</label>
+              <input type="number" id="phTb" placeholder="ex: 100" step="any" />
+            </div>
+            <div class="field">
+              <label id="phHvapLabel">ΔHvap (J/kg)</label>
+              <input type="number" id="phHvap" placeholder="ex: 2260000" step="any" />
+            </div>
+          </div>
+
+          <div class="info-callout">
+            <strong>Nota:</strong> Se a faixa de temperatura não cruzar o ponto de ebulição, o cálculo será apenas calor sensível com o Cp do líquido (ou vapor). Se T₁ &lt; T<sub>b</sub> &lt; T₂, o resultado incluirá aquecimento do líquido + vaporização + aquecimento do vapor.
+          </div>
+
+          <div class="action-row">
+            <button class="btn-primary" id="solvePhase">Calcular</button>
+            <button class="btn-secondary" id="clearPhase">Limpar</button>
+          </div>
+
+          <div class="eb-results" id="phaseResults" style="display:none;">
+            <div class="result-box">
+              <p class="result-label">Resultado — Mudança de Fase</p>
+              <p class="result-value" id="phaseResultValue">—</p>
+              <p id="phaseResultDetail" style="font-size:0.85rem; color: var(--text-secondary); margin-top: 0.5rem;"></p>
+              <div class="step-breakdown" id="phaseSteps" style="display:none;">
+                <h5>Detalhamento das etapas</h5>
+                <div id="phaseStepItems"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================= HEAT EXCHANGER TAB ================= -->
+      <section class="eb-panel" id="panel-exchanger" role="tabpanel">
+
+        <h3 class="section-heading">Trocador de Calor — Método LMTD</h3>
+
+        <div class="calc-container">
+          <h4>Dimensionamento / Análise de Trocador</h4>
+          <p class="calc-desc">Calcule a taxa de calor, área, U ou temperaturas de saída usando o método da diferença média logarítmica.</p>
+
+          <div class="diagram-box">
+            <svg width="460" height="130" viewBox="0 0 460 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Hot fluid -->
+              <line x1="30" y1="40" x2="130" y2="40" stroke="#f85149" stroke-width="2" marker-end="url(#arrHX1)"/>
+              <rect x="130" y="15" width="200" height="100" rx="12" fill="#1c2333" stroke="#30363d" stroke-width="2"/>
+              <text x="230" y="55" fill="#d29922" font-size="12" text-anchor="middle" font-family="Segoe UI, sans-serif">Trocador de</text>
+              <text x="230" y="72" fill="#d29922" font-size="12" text-anchor="middle" font-family="Segoe UI, sans-serif">Calor</text>
+              <line x1="330" y1="40" x2="440" y2="40" stroke="#f85149" stroke-width="2" marker-end="url(#arrHX1)"/>
+              <text x="5" y="37" fill="#f85149" font-size="11" font-family="Segoe UI, sans-serif">Th,in</text>
+              <text x="442" y="37" fill="#f85149" font-size="11" font-family="Segoe UI, sans-serif">Th,out</text>
+              <!-- Cold fluid (counter-current) -->
+              <line x1="440" y1="90" x2="330" y2="90" stroke="#58a6ff" stroke-width="2" marker-end="url(#arrHX2)"/>
+              <line x1="130" y1="90" x2="30" y2="90" stroke="#58a6ff" stroke-width="2" marker-end="url(#arrHX2)"/>
+              <text x="442" y="100" fill="#58a6ff" font-size="11" font-family="Segoe UI, sans-serif">Tc,in</text>
+              <text x="5" y="100" fill="#58a6ff" font-size="11" font-family="Segoe UI, sans-serif">Tc,out</text>
+              <defs>
+                <marker id="arrHX1" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#f85149"/></marker>
+                <marker id="arrHX2" markerWidth="8" markerHeight="6" refX="0" refY="3" orient="auto-start-reverse"><path d="M8,0 L0,3 L8,6" fill="#58a6ff"/></marker>
+              </defs>
+            </svg>
+          </div>
+
+          <div class="input-grid">
+            <div class="field">
+              <label>Configuração do trocador</label>
+              <select id="hxConfig">
+                <option value="counter">Contracorrente</option>
+                <option value="parallel">Paralelo (cocorrente)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="streams-area">
+            <div class="stream-column">
+              <h5>Fluido Quente <span class="stream-badge" style="background:#f85149;">hot</span></h5>
+              <div class="input-grid" style="margin-bottom:0;">
+                <div class="field">
+                  <label>Vazão mássica (kg/s)</label>
+                  <input type="number" id="hxMh" placeholder="ex: 5" step="any" />
+                </div>
+                <div class="field">
+                  <label>Cp (J/kg·K)</label>
+                  <input type="number" id="hxCph" placeholder="ex: 4186" step="any" />
+                </div>
+                <div class="field">
+                  <label>T entrada (°C)</label>
+                  <input type="number" id="hxThi" placeholder="ex: 150" step="any" />
+                </div>
+                <div class="field">
+                  <label>T saída (°C)</label>
+                  <input type="number" id="hxTho" placeholder="calculado ou dado" step="any" />
+                </div>
+              </div>
+            </div>
+            <div class="stream-column">
+              <h5>Fluido Frio <span class="stream-badge" style="background:#58a6ff;">cold</span></h5>
+              <div class="input-grid" style="margin-bottom:0;">
+                <div class="field">
+                  <label>Vazão mássica (kg/s)</label>
+                  <input type="number" id="hxMc" placeholder="ex: 8" step="any" />
+                </div>
+                <div class="field">
+                  <label>Cp (J/kg·K)</label>
+                  <input type="number" id="hxCpc" placeholder="ex: 4186" step="any" />
+                </div>
+                <div class="field">
+                  <label>T entrada (°C)</label>
+                  <input type="number" id="hxTci" placeholder="ex: 20" step="any" />
+                </div>
+                <div class="field">
+                  <label>T saída (°C)</label>
+                  <input type="number" id="hxTco" placeholder="calculado ou dado" step="any" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="input-grid">
+            <div class="field">
+              <label>U — Coef. global (W/m²·K)</label>
+              <input type="number" id="hxU" placeholder="ex: 500" step="any" />
+            </div>
+            <div class="field">
+              <label>A — Área de troca (m²)</label>
+              <input type="number" id="hxA" placeholder="calculado ou dado" step="any" />
+            </div>
+            <div class="field">
+              <label>Q — Taxa de calor (W) — calculado</label>
+              <input type="number" id="hxQ" placeholder="calculado" step="any" readonly />
+            </div>
+          </div>
+
+          <div class="info-callout">
+            <strong>Como usar:</strong> Forneça as temperaturas de entrada e saída de ambos os fluidos (ou deixe <em>uma</em> T de saída em branco para ser calculada via balanço). O sistema calcula Q, ΔTLMTD e a área necessária (ou U, se a área for dada).
+          </div>
+
+          <div class="action-row">
+            <button class="btn-primary" id="solveExchanger">Calcular</button>
+            <button class="btn-secondary" id="clearExchanger">Limpar</button>
+          </div>
+
+          <div class="eb-results" id="exchangerResults" style="display:none;">
+            <div class="result-box">
+              <p class="result-label">Resultado — Trocador de Calor</p>
+              <p class="result-value" id="exchangerResultValue">—</p>
+              <p id="exchangerResultDetail" style="font-size:0.85rem; color: var(--text-secondary); margin-top: 0.5rem;"></p>
+              <div class="step-breakdown" id="exchangerSteps" style="display:none;">
+                <h5>Parâmetros calculados</h5>
+                <div id="exchangerStepItems"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================= ADIABATIC TEMPERATURE TAB ================= -->
+      <section class="eb-panel" id="panel-adiabatic" role="tabpanel">
+
+        <h3 class="section-heading">Temperatura Adiabática</h3>
+
+        <div class="calc-container">
+          <h4>Temperatura Adiabática de Reação</h4>
+          <p class="calc-desc">Calcule a temperatura de saída de um reator adiabático dadas a conversão, entalpia de reação e propriedades da mistura.</p>
+
+          <div class="input-grid">
+            <div class="field">
+              <label>Vazão molar de A na entrada (mol/s)</label>
+              <input type="number" id="adFA0" placeholder="ex: 10" step="any" />
+            </div>
+            <div class="field">
+              <label>Conversão (X, 0–1)</label>
+              <input type="number" id="adX" placeholder="ex: 0.8" step="0.01" min="0" max="1" />
+            </div>
+            <div class="field">
+              <label>ΔHrxn (J/mol) — negativo = exotérmica</label>
+              <input type="number" id="adDHrxn" placeholder="ex: -80000" step="any" />
+            </div>
+          </div>
+
+          <div class="input-grid">
+            <div class="field">
+              <label>T entrada (°C)</label>
+              <input type="number" id="adTin" placeholder="ex: 25" step="any" />
+            </div>
+            <div class="field">
+              <label>ΣFi·Cpi na saída (J/s·K)</label>
+              <input type="number" id="adSumFCp" placeholder="ex: 500" step="any" />
+            </div>
+          </div>
+
+          <div class="info-callout">
+            <strong>Fórmula usada:</strong> <span data-formula-inline="T_{ad} = T_{in} + \frac{(-\Delta H_{rxn}) \cdot X_A \cdot F_{A0}}{\sum F_i \cdot C_{p,i}}"></span>. Use valores consistentes: se ΔHrxn está em J/mol, ΣFi·Cpi deve estar em J/(s·K) e FA0 em mol/s.
+          </div>
+
+          <div class="action-row">
+            <button class="btn-primary" id="solveAdiabatic">Calcular</button>
+            <button class="btn-secondary" id="clearAdiabatic">Limpar</button>
+          </div>
+
+          <div class="eb-results" id="adiabaticResults" style="display:none;">
+            <div class="result-box">
+              <p class="result-label">Resultado — Temperatura Adiabática</p>
+              <p class="result-value" id="adiabaticResultValue">—</p>
+              <p id="adiabaticResultDetail" style="font-size:0.85rem; color: var(--text-secondary); margin-top: 0.5rem;"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="calc-container" style="margin-top:1.5rem;">
+          <h4>Temperatura de Mistura Adiabática</h4>
+          <p class="calc-desc">Calcule a temperatura final quando duas correntes a temperaturas diferentes são misturadas adiabaticamente.</p>
+
+          <div class="input-grid">
+            <div class="field">
+              <label>Vazão corrente 1 (kg/s)</label>
+              <input type="number" id="mixM1" placeholder="ex: 5" step="any" />
+            </div>
+            <div class="field">
+              <label>Cp corrente 1 (J/kg·K)</label>
+              <input type="number" id="mixCp1" placeholder="ex: 4186" step="any" />
+            </div>
+            <div class="field">
+              <label>T corrente 1 (°C)</label>
+              <input type="number" id="mixT1" placeholder="ex: 80" step="any" />
+            </div>
+          </div>
+          <div class="input-grid">
+            <div class="field">
+              <label>Vazão corrente 2 (kg/s)</label>
+              <input type="number" id="mixM2" placeholder="ex: 3" step="any" />
+            </div>
+            <div class="field">
+              <label>Cp corrente 2 (J/kg·K)</label>
+              <input type="number" id="mixCp2" placeholder="ex: 2500" step="any" />
+            </div>
+            <div class="field">
+              <label>T corrente 2 (°C)</label>
+              <input type="number" id="mixT2" placeholder="ex: 20" step="any" />
+            </div>
+          </div>
+
+          <div class="action-row">
+            <button class="btn-primary" id="solveMix">Calcular</button>
+            <button class="btn-secondary" id="clearMix">Limpar</button>
+          </div>
+
+          <div class="eb-results" id="mixResults" style="display:none;">
+            <div class="result-box">
+              <p class="result-label">Resultado — Mistura Adiabática</p>
+              <p class="result-value" id="mixResultValue">—</p>
+              <p id="mixResultDetail" style="font-size:0.85rem; color: var(--text-secondary); margin-top: 0.5rem;"></p>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
     </main>
   </div>
+
+  <!-- ========== Footer ========== -->
   <footer class="site-footer">
     <div class="container">
       <p>&copy; 2026 Q-Engineering Hub — <a href="https://github.com/bryanmzauza/Q-Engineering-Hub" target="_blank" rel="noopener">GitHub</a></p>
     </div>
   </footer>
+
   <script src="../js/main.js"></script>
+  <script src="../js/modules/energy-balance.js"></script>
+
+  <!-- KaTeX rendering -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('[data-formula]').forEach(el => {
+        katex.render(el.getAttribute('data-formula'), el, { displayMode: true, throwOnError: false });
+      });
+      document.querySelectorAll('[data-formula-inline]').forEach(el => {
+        katex.render(el.getAttribute('data-formula-inline'), el, { displayMode: false, throwOnError: false });
+      });
+    });
+  </script>
 </body>
 </html>
